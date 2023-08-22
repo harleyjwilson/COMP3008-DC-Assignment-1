@@ -22,6 +22,7 @@ namespace ChatServer
             host.Open();
 
             Console.WriteLine("System Online");
+            Console.WriteLine("This is a test");
             Console.ReadLine();
 
             host.Close();
