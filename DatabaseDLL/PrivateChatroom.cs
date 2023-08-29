@@ -15,6 +15,13 @@ namespace DatabaseDLL
             allowedUsers = new HashSet<User>();
         }
 
+        public PrivateChatroom(string roomname, User userOne, User userTwo) : base(roomname)
+        {
+            allowedUsers = new HashSet<User>();
+            AddAllowedUser(userOne);
+            AddAllowedUser(userTwo);
+        }
+
         public HashSet<User> AllowedUsers
         {
             get { return allowedUsers; }
