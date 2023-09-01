@@ -36,15 +36,38 @@ namespace ChatClient
             string URL = "net.tcp://localhost:8100/ChatService";
             channelFact = new ChannelFactory<IChatServerInterface>(tcp, URL);
             channel = channelFact.CreateChannel();
+        }
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            HelloLabel.Content = "Getting User...";
+            Task<User> task = new Task<User>(GetUserByUsername);
+            task.Start();
+            User user = await task;
+            UpdateGui(user);
+        }
+
+        private User GetUserByUsername()
+        {
+            User user;
             try
             {
-                User user = channel.SearchUserByName("User 1");
-                HelloLabel.Content = "Hello, " + user.Username;
+                string username = "User 1";
+                user = channel.SearchUserByName(username);
             }
-            catch (Exception ex) when (ex is FaultException<KeyNotFoundException>)
-            { 
-                HelloLabel.Content = "Hello, Stranger";
+            catch (Exception ex) when (ex is FaultException<KeyNotFoundException> || ex is KeyNotFoundException || ex is FaultException)
+            {
+                user = new User("");
             }
+            catch (Exception ex) when (ex is CommunicationException)
+            {
+                user = new User("");
+            }
+            return user;
+        }
+
+        private void UpdateGui(User user)
+        {
+            HelloLabel.Dispatcher.Invoke(new Action(() => HelloLabel.Content = "Hello, " + user.Username + "!"));
         }
     }
 }
