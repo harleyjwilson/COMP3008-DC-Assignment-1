@@ -100,6 +100,10 @@
       <Project>{4BF3BB00-0BA6-46E0-B382-E8E8B859C501}</Project>
       <Name>ChatServer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatabaseDLL\DatabaseDLL.csproj">
+      <Project>{F747E6D1-76B4-4B17-9DD1-9D3F0D415414}</Project>
+      <Name>DatabaseDLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IChatServerInterfaceDLL\IChatServerInterfaceDLL.csproj">
       <Project>{E178821B-3CAD-428E-A96B-1AD21748527C}</Project>
       <Name>IChatServerInterfaceDLL</Name>

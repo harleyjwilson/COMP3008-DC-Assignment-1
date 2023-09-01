@@ -1,4 +1,5 @@
 ﻿using ChatServer;
+using DatabaseDLL;
 using IChatServerInterfaceDLL;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,15 @@ namespace ChatClient
             string URL = "net.tcp://localhost:8100/ChatService";
             channelFact = new ChannelFactory<IChatServerInterface>(tcp, URL);
             channel = channelFact.CreateChannel();
-            HelloLabel.Content = "Hello, " + channel.GetName() + "!!!";
+            try
+            {
+                User user = channel.SearchUserByName("User 1");
+                HelloLabel.Content = "Hello, " + user.Username;
+            }
+            catch (Exception ex) when (ex is FaultException<KeyNotFoundException>)
+            { 
+                HelloLabel.Content = "Hello, Stranger";
+            }
         }
     }
 }
