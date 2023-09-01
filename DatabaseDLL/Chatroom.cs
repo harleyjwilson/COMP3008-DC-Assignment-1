@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DatabaseDLL
 {
+    [DataContractAttribute]
     public class Chatroom
     {
+        [DataMemberAttribute()]
         public string name;
+        [DataMemberAttribute()]
         public HashSet<User> users;
+        [DataMemberAttribute()]
         public List<Message> messages;
 
         public Chatroom(string name)
@@ -65,13 +70,15 @@ namespace DatabaseDLL
 
         public override int GetHashCode()
         {
-            int hashCode = 1920955398;
+            int hashCode = -1686499012;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<List<User>>.Default.GetHashCode(users);
+            hashCode = hashCode * -1521134295 + EqualityComparer<HashSet<User>>.Default.GetHashCode(users);
             hashCode = hashCode * -1521134295 + EqualityComparer<List<Message>>.Default.GetHashCode(messages);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<HashSet<User>>.Default.GetHashCode(Users);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Message>>.Default.GetHashCode(Messages);
             return hashCode;
         }
-
         public override string ToString()
         {
             return base.ToString();

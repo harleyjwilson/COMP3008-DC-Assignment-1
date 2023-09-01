@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DatabaseDLL
 {
+    [DataContractAttribute]
     public class Message
     {
+        [DataMemberAttribute()]
         public User user;
+        [DataMemberAttribute()]
         public string message;
 
         public Message(User user, string message)

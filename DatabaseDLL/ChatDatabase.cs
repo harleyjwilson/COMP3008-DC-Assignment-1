@@ -9,57 +9,111 @@ namespace DatabaseDLL
 {
     public class ChatDatabase
     {
-        public HashSet<User> users;
-        public HashSet<Chatroom> chatrooms;
-        public HashSet<PrivateChatroom> privateChatrooms;
+        public SortedSet<User> users;
+        public SortedSet<Chatroom> chatrooms;
+        public List<PrivateChatroom> privateChatrooms;
 
         public ChatDatabase()
         {
-            users = new HashSet<User>();
-            chatrooms = new HashSet<Chatroom>();
-            privateChatrooms = new HashSet<PrivateChatroom>();
+            // Comparer implementation for below SortedSets
+            // obtained from Sergey Kalinichenko,
+            // https://stackoverflow.com/a/42356143
+            // (Accessed 1 September 2023).
+
+            users = new SortedSet<User>(
+                Comparer<User>.Create((a, b) =>
+                {
+                    var res = a.Username.CompareTo(b.Username);
+                    return res != 0 ? res : a.Username.CompareTo(b.Username);
+                })
+               );
+            chatrooms = new SortedSet<Chatroom>(
+                Comparer<Chatroom>.Create((a, b) =>
+                {
+                    var res = a.Name.CompareTo(b.Name);
+                    return res != 0 ? res : a.Name.CompareTo(b.Name);
+                })
+               );
+            privateChatrooms = new List<PrivateChatroom>();
         }
 
-        public HashSet<User> Users
+        /// <summary>
+        /// Generate test entries for database implementation.
+        /// TODO delete before submission.
+        /// </summary>
+
+        public void GenerateFakeDatabase()
+        {
+            AddUser("User 1");
+            AddUser("User 2");
+            AddUser("User 3");
+            AddUser("User 4");
+            AddUser("User 5");
+            AddUser("User 6");
+            AddUser("User 7");
+            AddUser("User 8");
+            AddUser("User 9");
+            AddUser("User 10");
+            AddUser("User 11");
+            AddUser("User 12");
+
+            AddChatroom("Chatroom 1");
+            AddChatroom("Chatroom 2");
+            AddChatroom("Chatroom 3");
+            AddChatroom("Chatroom 4");
+
+            SearchChatroomByName("Chatroom 1").AddUser("User 1");
+            SearchChatroomByName("Chatroom 1").AddUser("User 2");
+            SearchChatroomByName("Chatroom 1").AddUser("User 3");
+            SearchChatroomByName("Chatroom 2").AddUser("User 4");
+            SearchChatroomByName("Chatroom 2").AddUser("User 5");
+            SearchChatroomByName("Chatroom 3").AddUser("User 6");
+
+            AddPrivateChatroom("Private Chatroom 1", SearchUserByName("User 1"), SearchUserByName("User 2"));
+            AddPrivateChatroom("Private Chatroom 2", SearchUserByName("User 3"), SearchUserByName("User 4"));
+            AddPrivateChatroom("Private Chatroom 3", SearchUserByName("User 4"), SearchUserByName("User 5"));
+        }
+
+        public SortedSet<User> Users
         {
             get { return users; }
             set { users = value; }
         }
 
-        public HashSet<Chatroom> Chatrooms
+        public SortedSet<Chatroom> Chatrooms
         {
             get { return chatrooms; }
             set { chatrooms = value; }
         }
 
-        public HashSet<PrivateChatroom> PrivateChatrooms
+        public List<PrivateChatroom> PrivateChatrooms
         {
             get { return privateChatrooms; }
             set { privateChatrooms = value; }
         }
 
-        public Boolean AddUser(string username)
+        public bool AddUser(string username)
         {
             return users.Add(new User(username));
         }
 
-        public Boolean RemoveUser(string username)
+        public bool RemoveUser(string username)
         {
             return users.Remove(new User(username));
         }
 
-        public Boolean UserExists(string username)
+        public bool UserExists(string username)
         {
             return users.Contains(new User(username));
         }
 
-        public Boolean AddChatroom(string roomName)
+        public bool AddChatroom(string roomName)
         {
 
             return chatrooms.Add(new Chatroom(roomName));
         }
 
-        public Boolean RemoveChatroom(string roomName)
+        public bool RemoveChatroom(string roomName)
         {
             foreach (var room in chatrooms)
             {
@@ -71,7 +125,7 @@ namespace DatabaseDLL
             return false;
         }
 
-        public Boolean ChatroomExists(string roomName)
+        public bool ChatroomExists(string roomName)
         {
             foreach (var room in chatrooms)
             {
@@ -83,12 +137,24 @@ namespace DatabaseDLL
             return false;
         }
 
-        public Boolean AddPrivateChatroom(string roomName, User userOne, User userTwo)
+        public bool AddPrivateChatroom(string roomName, User userOne, User userTwo)
         {
-            return privateChatrooms.Add(new PrivateChatroom(roomName, userOne, userTwo));
+            bool validNewRoom = true;
+            foreach(var room in privateChatrooms)
+            {
+                if (room.AllowedUsers.Contains(userOne) && room.AllowedUsers.Contains(userTwo))
+                {
+                    validNewRoom = false;
+                }
+            }
+            if (validNewRoom)
+            {
+                privateChatrooms.Add(new PrivateChatroom(roomName, userOne, userTwo));
+            }
+            return validNewRoom;
         }
 
-        public Boolean RemovePrivateChatroom(string roomName)
+        public bool RemovePrivateChatroom(string roomName)
         {
             foreach (var room in privateChatrooms)
             {
@@ -100,7 +166,7 @@ namespace DatabaseDLL
             return false;
         }
 
-        public Boolean PrivateChatroomExists(string roomName)
+        public bool PrivateChatroomExists(string roomName)
         {
             foreach (var room in privateChatrooms)
             {
@@ -136,7 +202,7 @@ namespace DatabaseDLL
             throw new KeyNotFoundException("Chatroom not found.");
         }
 
-        public Chatroom SearchPrivateChatroomByName(string name)
+        public PrivateChatroom SearchPrivateChatroomByName(string name)
         {
             foreach (var room in privateChatrooms)
             {
@@ -182,24 +248,39 @@ namespace DatabaseDLL
                     allowedPrivateChatrooms.Add(room.Name);
                 }
             }
+
+            allowedPrivateChatrooms.Sort(0, allowedPrivateChatrooms.Count, 
+                Comparer<string>.Create((a, b) =>
+            {
+                var res = a.CompareTo(b);
+                return res != 0 ? res : a.CompareTo(b);
+            }));
+
             return allowedPrivateChatrooms.ToArray();
         }
 
         public override bool Equals(object obj)
         {
             return obj is ChatDatabase database &&
-                   EqualityComparer<HashSet<User>>.Default.Equals(users, database.users) &&
-                   EqualityComparer<HashSet<Chatroom>>.Default.Equals(chatrooms, database.chatrooms);
+                   EqualityComparer<SortedSet<User>>.Default.Equals(users, database.users) &&
+                   EqualityComparer<SortedSet<Chatroom>>.Default.Equals(chatrooms, database.chatrooms) &&
+                   EqualityComparer<List<PrivateChatroom>>.Default.Equals(privateChatrooms, database.privateChatrooms) &&
+                   EqualityComparer<SortedSet<User>>.Default.Equals(Users, database.Users) &&
+                   EqualityComparer<SortedSet<Chatroom>>.Default.Equals(Chatrooms, database.Chatrooms) &&
+                   EqualityComparer<List<PrivateChatroom>>.Default.Equals(PrivateChatrooms, database.PrivateChatrooms);
         }
 
         public override int GetHashCode()
         {
-            int hashCode = -1206041640;
-            hashCode = hashCode * -1521134295 + EqualityComparer<HashSet<User>>.Default.GetHashCode(users);
-            hashCode = hashCode * -1521134295 + EqualityComparer<HashSet<Chatroom>>.Default.GetHashCode(chatrooms);
+            int hashCode = -890036836;
+            hashCode = hashCode * -1521134295 + EqualityComparer<SortedSet<User>>.Default.GetHashCode(users);
+            hashCode = hashCode * -1521134295 + EqualityComparer<SortedSet<Chatroom>>.Default.GetHashCode(chatrooms);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<PrivateChatroom>>.Default.GetHashCode(privateChatrooms);
+            hashCode = hashCode * -1521134295 + EqualityComparer<SortedSet<User>>.Default.GetHashCode(Users);
+            hashCode = hashCode * -1521134295 + EqualityComparer<SortedSet<Chatroom>>.Default.GetHashCode(Chatrooms);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<PrivateChatroom>>.Default.GetHashCode(PrivateChatrooms);
             return hashCode;
         }
-
         public override string ToString()
         {
             return base.ToString();
