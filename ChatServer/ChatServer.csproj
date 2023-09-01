@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -55,6 +55,10 @@
     <ProjectReference Include="..\IChatServerInterfaceDLL\IChatServerInterfaceDLL.csproj">
       <Project>{E178821B-3CAD-428E-A96B-1AD21748527C}</Project>
       <Name>IChatServerInterfaceDLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatabaseDLL\DatabaseDLL.csproj">
+      <Project>{F747E6D1-76B4-4B17-9DD1-9D3F0D415414}</Project>
+      <Name>DatabaseDLL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
