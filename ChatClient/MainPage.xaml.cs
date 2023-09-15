@@ -22,6 +22,7 @@ namespace ChatClient
         public MainPage()
         {
             InitializeComponent();
+            //jinwoo
         }
     }
 }
