@@ -30,17 +30,20 @@ namespace ChatClient
         {
             InitializeComponent();
 
+            // Set up channel for server communication
             ChannelFactory<IChatServerInterface> channelFact;
             NetTcpBinding tcp = new NetTcpBinding();
-
             string URL = "net.tcp://localhost:8100/ChatService";
             channelFact = new ChannelFactory<IChatServerInterface>(tcp, URL);
             channel = channelFact.CreateChannel();
+
+            // Try search for user and display result
             try
             {
                 User user = channel.SearchUserByName("User 1");
                 HelloLabel.Content = "Hello, " + user.Username;
             }
+            // If no result, catch exception and display default message.
             catch (Exception ex) when (ex is FaultException<KeyNotFoundException>)
             { 
                 HelloLabel.Content = "Hello, Stranger";

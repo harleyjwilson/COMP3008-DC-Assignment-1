@@ -8,6 +8,9 @@ using DatabaseDLL;
 
 namespace IChatServerInterfaceDLL
 {
+    /// <summary>
+    /// ChatServer Interface
+    /// </summary>
     [ServiceContract]
     public interface IChatServerInterface
     {
