@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:ChatClient"
              StartupUri="Login.xaml">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Themes/ContactCard.xaml"/>
+                <ResourceDictionary Source="./Themes/MessageBox.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
          
     </Application.Resources>
 </Application>

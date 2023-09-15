@@ -5,29 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="400">
+        Title="Login" Height="450" Width="400"
+        Background="#36393f"
+        
+        >
     <Grid>
 
         <!-- Big "Login" text in the middle top -->
-        <TextBlock Text="Login" 
+        <TextBlock Text="Login"
+               
                FontSize="32" 
                HorizontalAlignment="Center" 
                VerticalAlignment="Top" 
                Margin="0,50,0,0"/>
 
-        <!-- TextBox for user input -->
-        <TextBox x:Name="UserName" 
-             Text="Type the user" 
-             HorizontalAlignment="Center" 
-             Margin="0,201,0,0" 
-             VerticalAlignment="Top" />
+        <Grid Background="#2F3136"
+              Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
 
-        <!-- Button for user action -->
-        <Button Content="Get User" 
-            HorizontalAlignment="Center" 
-            Margin="0,232,0,0" 
-            VerticalAlignment="Top" 
-            Click="Button_Click"/>
+            <!-- TextBox for user input -->
+            <TextBox x:Name="UserName" 
+                     Text="Type the user" 
+                     HorizontalAlignment="Center" 
+                     VerticalAlignment="Center"
+                     Width="300" Height="40" 
+                     Foreground="Black"
+                     Padding="10"
+                     FontSize="16"/>
+
+            <!-- Button for user action -->
+            <Button Content="Get User" 
+                    HorizontalAlignment="Center" 
+                    Grid.Row="1"
+                    Width="200"
+                    Click="Button_Click"/>
+        </Grid>
 
     </Grid>
 </Window>

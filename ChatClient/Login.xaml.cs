@@ -78,6 +78,7 @@ namespace ChatClient
                 
                 MainPage mainPage = new MainPage();
                 mainPage.Show();
+                this.Close();
             }
             else
             {

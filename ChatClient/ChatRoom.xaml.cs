@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace ChatClient
 {
     /// <summary>
-    /// Interaction logic for MainPage.xaml
+    /// Interaction logic for ChatRoom.xaml
     /// </summary>
-    public partial class MainPage : Window
+    public partial class ChatRoom : Window
     {
-        public MainPage()
+        public ChatRoom()
         {
             InitializeComponent();
             DataContext = new ViewModel.MainPageViewModel();
@@ -77,18 +77,6 @@ namespace ChatClient
                 var viewModel = DataContext as ViewModel.MainPageViewModel;
                 viewModel.Chatrooms.Add(database.SearchChatroomByName(newChatroomName));
             }
-        }
-
-        private void LogoutButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Create an instance of the Login window
-            MainWindow loginWindow = new MainWindow();
-
-            // Show the Login window
-            loginWindow.Show();
-
-            // Close the current window
-            this.Close();
         }
     }
 }
