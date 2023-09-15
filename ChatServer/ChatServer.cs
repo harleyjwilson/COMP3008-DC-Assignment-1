@@ -16,9 +16,13 @@ namespace ChatServer
     {
         ChatDatabase db;
 
+        /// <summary>
+        /// ChatServer Constructor. 
+        /// </summary>
         public ChatServer()
         {
             db = new ChatDatabase();
+            // Set up fake database for testing purposes
             db.GenerateFakeDatabase();
         }
 
@@ -52,6 +56,17 @@ namespace ChatServer
             return db.ChatroomExists(roomName);
         }
 
+        /// <summary>
+        /// Take strings for room name, and two usernames. Searches for users,
+        /// throws FaultException<KeyNotFoundException>if not found. If both
+        /// users searched successfully, attempt to add private chatroom, return
+        /// success as a boolean value.
+        /// </summary>
+        /// <param name="roomName">string roomName</param>
+        /// <param name="usernameOne">string usernameOne</param>
+        /// <param name="usernameTwo">string usernameTwo</param>
+        /// <returns>boolean of whether successfully added</returns>
+        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public bool AddPrivateChatroom(string roomName, string usernameOne, string usernameTwo)
         {
             User userOne = null;
@@ -91,6 +106,13 @@ namespace ChatServer
             return db.PrivateChatroomExists(roomName);
         }
 
+        /// <summary>
+        /// Search for User by string. Either return User or throw
+        /// FaultException<KeyNotFoundException> if unsuccessful.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public User SearchUserByName(string username)
         {
             try
@@ -103,6 +125,13 @@ namespace ChatServer
             }
         }
 
+        /// <summary>
+        /// Search for Chatroom by string. Either return Chatroom or throw
+        /// FaultException<KeyNotFoundException> if unsuccessful.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public Chatroom SearchChatroomByName(string name)
         {
             try
@@ -115,6 +144,13 @@ namespace ChatServer
             }
         }
 
+        /// <summary>
+        /// Search for PrivateChatroom by string. Either return PrivateChatroom or throw
+        /// FaultException<KeyNotFoundException> if unsuccessful.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public PrivateChatroom SearchPrivateChatroomByName(string name)
         {
             try
@@ -137,6 +173,14 @@ namespace ChatServer
             return db.GetChatroomNames();
         }
 
+        /// <summary>
+        /// Search for User by string. If successful, get allowed private
+        /// chatrooms. Throw FaultException<KeyNotFoundException>
+        /// if unsuccessful.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public string[] GetAllowedPrivateChatroomNames(string username)
         {
             User user;

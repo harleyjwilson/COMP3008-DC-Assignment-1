@@ -12,6 +12,7 @@ namespace ChatServer
     {
         static void Main(string[] args)
         {
+            // Set up ChatServer
             Console.WriteLine("Server connection established");
             ServiceHost host;
             NetTcpBinding tcp = new NetTcpBinding();

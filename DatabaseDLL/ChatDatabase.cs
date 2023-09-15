@@ -9,6 +9,8 @@ namespace DatabaseDLL
 {
     public class ChatDatabase
     {
+        private const int NUMBER_OF_USERS = 12; //number of user in database
+        private const int NUMBER_OF_CHATROOMS = 4; //number of chatrooms
         public SortedSet<User> users;
         public SortedSet<Chatroom> chatrooms;
         public List<PrivateChatroom> privateChatrooms;
@@ -44,23 +46,18 @@ namespace DatabaseDLL
 
         public void GenerateFakeDatabase()
         {
-            AddUser("User 1");
-            AddUser("User 2");
-            AddUser("User 3");
-            AddUser("User 4");
-            AddUser("User 5");
-            AddUser("User 6");
-            AddUser("User 7");
-            AddUser("User 8");
-            AddUser("User 9");
-            AddUser("User 10");
-            AddUser("User 11");
-            AddUser("User 12");
-
-            AddChatroom("Chatroom 1");
-            AddChatroom("Chatroom 2");
-            AddChatroom("Chatroom 3");
-            AddChatroom("Chatroom 4");
+            /* Creates users */
+            for (int i = 1; i <= NUMBER_OF_USERS; i++)
+            {
+                String temp = "User ";
+                AddUser(temp + i);
+            }
+            /* Creates chatrooms */
+            for (int i = 1; i <= NUMBER_OF_CHATROOMS; i++)
+            {
+                String temp = "Chatroom ";
+                AddChatroom(temp + i);
+            }
 
             SearchChatroomByName("Chatroom 1").AddUser("User 1");
             SearchChatroomByName("Chatroom 1").AddUser("User 2");
