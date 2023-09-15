@@ -15,24 +15,40 @@ namespace DatabaseDLL
         [DataMemberAttribute()]
         public string message;
 
+        /// <summary>
+        /// Message Constructor
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="message"></param>
         public Message(User user, string message)
         {
             this.user = user;
             this.message = message;
         }
 
+        /// <summary>
+        /// User property setter and getter.
+        /// </summary>
         public User User
         {
             get { return user; }
             set { user = value; }
         }
 
+        /// <summary>
+        /// Text property setter and getter.
+        /// </summary>
         public string Text
         {
             get { return message; }
             set { message = value; }
         }
 
+        /// <summary>
+        /// Generated Equals method.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             return obj is Message message &&
@@ -42,6 +58,10 @@ namespace DatabaseDLL
                    Text == message.Text;
         }
 
+        /// <summary>
+        /// Generated GetHashCode method.
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
             int hashCode = 902200646;
@@ -52,6 +72,10 @@ namespace DatabaseDLL
             return hashCode;
         }
 
+        /// <summary>
+        /// Generated ToString method.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return base.ToString();
