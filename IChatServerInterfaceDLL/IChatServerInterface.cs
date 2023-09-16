@@ -36,6 +36,10 @@ namespace IChatServerInterfaceDLL
         bool AddPrivateChatroom(string roomName, string userOne, string userTwo);
 
         [OperationContract]
+        [FaultContract(typeof(KeyNotFoundException))]
+        PrivateChatroom GetPrivateChatroom(string userOne, string userTwo);
+
+        [OperationContract]
         bool RemovePrivateChatroom(string roomName);
 
         [OperationContract]
