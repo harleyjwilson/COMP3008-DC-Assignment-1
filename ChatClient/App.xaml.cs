@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace ChatClient
 {
@@ -13,5 +15,7 @@ namespace ChatClient
     /// </summary>
     public partial class App : Application
     {
+       
     }
+
 }
