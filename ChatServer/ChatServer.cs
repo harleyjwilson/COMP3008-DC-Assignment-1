@@ -96,6 +96,46 @@ namespace ChatServer
             return false;
         }
 
+        /// <summary>
+        /// Get private chatroom based on two users. If no private chatroom
+        /// exists between two users, throw KeyNotFoundException.
+        /// </summary>
+        /// <param name="usernameOne">string usernameOne</param>
+        /// <param name="usernameTwo">string usernameTwo</param>
+        /// <returns>boolean of whether successfully added</returns>
+        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
+        public PrivateChatroom GetPrivateChatroom(string usernameOne, string usernameTwo)
+        {
+            User userOne = null;
+            User userTwo = null;
+
+            try
+            {
+                userOne = db.SearchUserByName(usernameOne);
+            }
+            catch (KeyNotFoundException e)
+            {
+                throw new FaultException<KeyNotFoundException>(e, new FaultReason("First user not found."));
+            }
+            try
+            {
+                userTwo = db.SearchUserByName(usernameTwo);
+            }
+            catch (KeyNotFoundException e)
+            {
+                throw new FaultException<KeyNotFoundException>(e, new FaultReason("Second user not found."));
+            }
+
+            try
+            {
+                return db.GetPrivateChatroom(userOne, userTwo);
+            }
+            catch (KeyNotFoundException e)
+            {
+                throw new FaultException<KeyNotFoundException>(e, new FaultReason(e.Message));
+            }
+        }
+
         public bool RemovePrivateChatroom(string roomName)
         {
             return db.RemovePrivateChatroom(roomName);
