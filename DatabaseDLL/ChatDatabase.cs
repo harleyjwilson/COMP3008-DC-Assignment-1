@@ -8,12 +8,25 @@ using System.Threading.Tasks;
 namespace DatabaseDLL
 {
     public class ChatDatabase
+
     {
+
+        private static ChatDatabase _instance;
         private const int NUMBER_OF_USERS = 12; //number of user in database
         private const int NUMBER_OF_CHATROOMS = 4; //number of chatrooms
         public SortedSet<User> users;
         public SortedSet<Chatroom> chatrooms;
         public List<PrivateChatroom> privateChatrooms;
+
+        public static ChatDatabase Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new ChatDatabase();
+                return _instance;
+            }
+        }
 
         public ChatDatabase()
         {
@@ -21,6 +34,8 @@ namespace DatabaseDLL
             // obtained from Sergey Kalinichenko,
             // https://stackoverflow.com/a/42356143
             // (Accessed 1 September 2023).
+
+
 
             users = new SortedSet<User>(
                 Comparer<User>.Create((a, b) =>
@@ -281,6 +296,11 @@ namespace DatabaseDLL
         public override string ToString()
         {
             return base.ToString();
+        }
+
+        public List<Chatroom> GetAllChatrooms()
+        {
+            return chatrooms.ToList();
         }
     }
 }

@@ -73,16 +73,13 @@ namespace ChatClient
 
         private void UpdateGui(User user)
         {
-            if (string.IsNullOrWhiteSpace(user.Username))
+            MainPage mainPage = new MainPage(UserName.Text); // Always pass the entered username
+            mainPage.Show();
+            this.Close();
+
+            if (!string.IsNullOrWhiteSpace(user.Username))
             {
-                
-                MainPage mainPage = new MainPage();
-                mainPage.Show();
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("There is a same username!");
+                MessageBox.Show("There is a same username!"); // Optionally show a warning if the user already exists
             }
         }
     }

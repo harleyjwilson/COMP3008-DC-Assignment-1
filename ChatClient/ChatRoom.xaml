@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:ChatClient"
         mc:Ignorable="d"
         Title="ChatRoom" Height="650" Width="1200"
-        Background="#36393f">
+        Background="#36393f"
+        Topmost="True">
     <Grid>
     <Grid.RowDefinitions>
         <RowDefinition Height="25"/>
@@ -76,11 +77,11 @@
 
 
 
-        <ListView ItemsSource="{Binding Chatrooms}"
+        <ListView ItemsSource="{Binding Users}"
                       Background="Transparent"
                       BorderThickness="0"
                       Grid.Row="1"
-                      ItemContainerStyle="{StaticResource ContactCard}"/>
+                      ItemContainerStyle="{StaticResource UserBox}"/>
 
 
         <StackPanel Grid.Row="2"
@@ -121,7 +122,8 @@
             <Grid HorizontalAlignment="Stretch"
                       Margin="8">
 
-                <Label Content="@Username"
+                <Label x:Name="ChatRoomName"
+                        Content="ChatRoomName"
                            Foreground="White"
                            FontWeight="Bold"
                            Margin="5,0,5,0"

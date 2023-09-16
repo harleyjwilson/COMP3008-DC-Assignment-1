@@ -72,7 +72,7 @@
                 <RowDefinition Height="60" />
             </Grid.RowDefinitions>
 
-            <Label Content="Contacts"
+            <Label Content="ChatRooms"
                    VerticalAlignment="Center"
                    FontWeight="Medium"
                    Foreground="Gray"
@@ -84,7 +84,8 @@
                       Background="Transparent"
                       BorderThickness="0"
                       Grid.Row="1"
-                      ItemContainerStyle="{StaticResource ContactCard}"/>
+                      ItemContainerStyle="{StaticResource ChatRoomBox}"
+                      SelectionChanged="ChatroomList_SelectionChanged"/>
 
 
             <StackPanel Grid.Row="2"
@@ -97,7 +98,8 @@
                         Margin="18,0,0,0" />
 
                 <StackPanel VerticalAlignment="Center">
-                    <Label Content="Username"
+                    <Label x:Name="UsernameLabel" 
+                           Content="Username"
                            Foreground="White"
                            FontWeight="SemiBold"/>
 
@@ -122,29 +124,7 @@
 
             <Border BorderBrush="#2F3136"
                     BorderThickness="5,5,5,5">
-                <Grid HorizontalAlignment="Stretch"
-                      Margin="8">
-
-                    <Label Content="@Username"
-                           Foreground="White"
-                           FontWeight="Bold"
-                           Margin="5,0,5,0"
-                           VerticalAlignment="Center" />
-
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Right">
-
-                        <Image Width="20" Height="20"
-                               RenderOptions.BitmapScalingMode="Fant"
-                               Margin="5,0,5,0"
-                               Source="./Icons/call_low.png"/>
-
-                    </StackPanel>
-
-
-
-
-                </Grid>
+                
             </Border>
 
             <Grid Grid.Row="1">
@@ -154,6 +134,7 @@
                     <!-- Setting this to Auto will ensure the row only takes as much space as the button needs -->
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                
 
                 <!-- TextBlock for the welcome message -->
                 <TextBlock Text="WELCOME TO CHAT APP"
@@ -179,6 +160,12 @@
                     Grid.Row="1"
                     Click="CreateChatroomButton_Click"
                     />
+                <Button Content="Refresh" 
+                    Click="RefreshButton_Click"
+                    Width="100" Height="30" 
+                    Margin="10"
+                    Grid.Row="2"/>
+                
             </Grid>
 
 

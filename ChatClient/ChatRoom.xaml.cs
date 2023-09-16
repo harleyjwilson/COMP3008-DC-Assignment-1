@@ -19,10 +19,27 @@ namespace ChatClient
     /// </summary>
     public partial class ChatRoom : Window
     {
-        public ChatRoom()
+        public string ChatroomName { get; set; }
+        public string UserName { get; set; }
+        public ChatRoom(string chatroomName, string userName)
         {
             InitializeComponent();
-            DataContext = new ViewModel.MainPageViewModel();
+
+            ChatroomName = chatroomName;
+            UserName = userName;
+            ChatRoomName.Content = chatroomName;
+
+            var database = DatabaseDLL.ChatDatabase.Instance;
+            var chatroom = database.SearchChatroomByName(ChatroomName);
+            if (chatroom != null)
+            {
+                chatroom.AddUser(UserName);
+            }
+            else
+            {
+                // Consider handling the scenario where the chatroom is not found.
+                MessageBox.Show($"Chatroom '{ChatroomName}' not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -52,31 +69,6 @@ namespace ChatClient
             this.Close();
 
         }
-        // Add the event handler here:
-        private void CreateChatroomButton_Click(object sender, RoutedEventArgs e)
-        {
-            var database = (DataContext as ViewModel.MainPageViewModel)._database; // Access the database from ViewModel
 
-            var dialog = new ChatroomNameDialog();
-            if (dialog.ShowDialog() == true)
-            {
-                var newChatroomName = dialog.ChatroomName;
-                if (string.IsNullOrWhiteSpace(newChatroomName))
-                {
-                    MessageBox.Show("Please enter a valid chatroom name.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                if (database.ChatroomExists(newChatroomName))
-                {
-                    MessageBox.Show($"Chatroom '{newChatroomName}' already exists. Please choose a different name.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                database.AddChatroom(newChatroomName);
-                var viewModel = DataContext as ViewModel.MainPageViewModel;
-                viewModel.Chatrooms.Add(database.SearchChatroomByName(newChatroomName));
-            }
-        }
     }
 }
