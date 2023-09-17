@@ -233,5 +233,66 @@ namespace ChatServer
                 throw new FaultException<KeyNotFoundException>(e, new FaultReason(e.Message));
             }
         }
+
+        /* FileManagement methods */
+
+        /// <summary>
+        /// Add File to Chatroom
+        /// </summary>
+        /// <param name="roomName"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
+        public bool AddSharedFileToChatroom(string roomName, SharedFile file) {
+            try {
+                return db.AddSharedFileToChatroom(roomName, file);
+            } catch (KeyNotFoundException e) {
+                throw new FaultException<KeyNotFoundException>(e, new FaultReason("Chatroom not found."));
+            }
+        }
+
+        /// <summary>
+        /// Remove file from chatroom
+        /// </summary>
+        /// <param name="roomName"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
+        public bool RemoveSharedFileFromChatroom(string roomName, string fileName) {
+            try {
+                return db.RemoveSharedFileFromChatroom(roomName, fileName);
+            } catch (KeyNotFoundException e) {
+                throw new FaultException<KeyNotFoundException>(e, new FaultReason("Chatroom not found."));
+            }
+        }
+
+        /// <summary>
+        /// Get shared file from chatroom
+        /// </summary>
+        /// <param name="roomName"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
+        public SharedFile GetSharedFileFromChatroom(string roomName, string fileName) {
+            try {
+                return db.GetSharedFileFromChatroom(roomName, fileName);
+            } catch (KeyNotFoundException e) {
+                throw new FaultException<KeyNotFoundException>(e, new FaultReason("Chatroom or File not found."));
+            }
+        }
+
+        /// <summary>
+        /// Get all shared files from chatroom
+        /// </summary>
+        /// <param name="roomName"></param>
+        /// <returns></returns>
+        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
+        public List<SharedFile> GetAllSharedFilesFromChatroom(string roomName) {
+            try {
+                return db.GetAllSharedFilesFromChatroom(roomName);
+            } catch (KeyNotFoundException e) {
+                throw new FaultException<KeyNotFoundException>(e, new FaultReason("Chatroom not found."));
+            }
+        }
     }
 }

@@ -23,11 +23,12 @@ namespace DatabaseDLL {
             PrivateChatrooms = new List<PrivateChatroom>();
         }
 
-        /* Methods for adding, removing, and checking existence of users and chatrooms */
+        /* Methods for adding, removing, and checking existence of users */
         public bool AddUser(string username) => Users.Add(new User(username));
         public bool RemoveUser(string username) => Users.Remove(new User(username));
         public bool UserExists(string username) => Users.Contains(new User(username));
 
+        /* Methods for chatrooms */
         public bool AddChatroom(string roomName) => Chatrooms.Add(new Chatroom(roomName));
         public bool RemoveChatroom(string roomName) => Chatrooms.Remove(new Chatroom(roomName));
         public bool ChatroomExists(string roomName) => Chatrooms.Contains(new Chatroom(roomName));
@@ -98,5 +99,35 @@ namespace DatabaseDLL {
         public string[] GetUserNames() => Users.Select(u => u.Username).ToArray();
         public string[] GetChatroomNames() => Chatrooms.Select(r => r.Name).ToArray();
         public string[] GetAllowedPrivateChatroomNames(User user) => PrivateChatrooms.Where(r => r.AllowedUsers.Contains(user)).Select(r => r.Name).OrderBy(n => n).ToArray();
+
+        /* Wrappers for file sharing methods in classroom */
+
+        /// <summary>
+        /// Usage: Add the shared file to the "General" chatroom
+        /// db.AddSharedFileToChatroom("General", newFile);
+        /// </summary>
+        /// <param name="roomName"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public bool AddSharedFileToChatroom(string roomName, SharedFile file) {
+            var chatroom = SearchChatroomByName(roomName);
+            return chatroom.AddSharedFile(file);
+        }
+
+        public bool RemoveSharedFileFromChatroom(string roomName, string fileName) {
+            var chatroom = SearchChatroomByName(roomName);
+            return chatroom.RemoveSharedFile(fileName);
+        }
+
+        public SharedFile GetSharedFileFromChatroom(string roomName, string fileName) {
+            var chatroom = SearchChatroomByName(roomName);
+            return chatroom.GetSharedFile(fileName);
+        }
+
+        public List<SharedFile> GetAllSharedFilesFromChatroom(string roomName) {
+            var chatroom = SearchChatroomByName(roomName);
+            return chatroom.GetAllSharedFiles();
+        }
     }
+
 }
