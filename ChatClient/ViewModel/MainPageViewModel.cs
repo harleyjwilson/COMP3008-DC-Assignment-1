@@ -21,7 +21,7 @@ namespace ChatClient.ViewModel
 
      
 
-            Chatrooms = new ObservableCollection<Chatroom>(_database.Chatrooms.ToList());
+            Chatrooms = new ObservableCollection<Chatroom>();
         }
     }
 }

@@ -60,8 +60,11 @@ namespace IChatServerInterfaceDLL
         [OperationContract]
         string[] GetUserNames();
 
+       /* [OperationContract]
+        string[] GetChatroomNames();*/
+
         [OperationContract]
-        string[] GetChatroomNames();
+        List<Chatroom> ListChatRooms();
 
         [OperationContract]
         string[] GetAllowedPrivateChatroomNames(string username);

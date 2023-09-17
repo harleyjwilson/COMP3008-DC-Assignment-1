@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ChatServer
 {
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false, InstanceContextMode = InstanceContextMode.Single)]
     internal class ChatServer : IChatServerInterface
     {
         ChatDatabase db;
@@ -207,10 +207,12 @@ namespace ChatServer
             return db.GetUserNames();
         }
 
-        public string[] GetChatroomNames()
+       /* public string[] GetChatroomNames()
         {
             return db.GetChatroomNames();
-        }
+        }*/
+
+        public List<Chatroom> ListChatRooms() { return db.ListChatRoom(); }
 
         /// <summary>
         /// Search for User by string. If successful, get allowed private

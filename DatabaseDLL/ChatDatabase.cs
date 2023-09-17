@@ -28,7 +28,7 @@ namespace DatabaseDLL {
         public bool RemoveUser(string username) => Users.Remove(new User(username));
         public bool UserExists(string username) => Users.Contains(new User(username));
 
-        public bool AddChatroom(string roomName) => Chatrooms.Add(new Chatroom(roomName));
+        public bool AddChatroom(string roomName) => Chatrooms.Add(new Chatroom(roomName)); // TODO: This needs exception handling if false
         public bool RemoveChatroom(string roomName) => Chatrooms.Remove(new Chatroom(roomName));
         public bool ChatroomExists(string roomName) => Chatrooms.Contains(new Chatroom(roomName));
 
@@ -96,7 +96,10 @@ namespace DatabaseDLL {
         /// </summary>
         /// <returns></returns>
         public string[] GetUserNames() => Users.Select(u => u.Username).ToArray();
-        public string[] GetChatroomNames() => Chatrooms.Select(r => r.Name).ToArray();
+        public string[] roomNames() => Chatrooms.Select(r => r.Name).ToArray();
         public string[] GetAllowedPrivateChatroomNames(User user) => PrivateChatrooms.Where(r => r.AllowedUsers.Contains(user)).Select(r => r.Name).OrderBy(n => n).ToArray();
+
+        public List<Chatroom> ListChatRoom() => Chatrooms.ToList();
+    
     }
 }
