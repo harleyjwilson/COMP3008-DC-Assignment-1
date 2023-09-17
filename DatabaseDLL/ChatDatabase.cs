@@ -9,6 +9,10 @@ namespace DatabaseDLL
 {
     public class ChatDatabase
     {
+        /* Singleton using the .NET "lazy" convention to avoid threading issues */
+        private static readonly Lazy<ChatDatabase> lazy = new Lazy<ChatDatabase>(() => new ChatDatabase());
+        public static ChatDatabase Instance => lazy.Value;
+
         private const int NUMBER_OF_USERS = 12; //number of user in database
         private const int NUMBER_OF_CHATROOMS = 4; //number of chatrooms
         /// <summary>
