@@ -1,9 +1,14 @@
-﻿using System;
+﻿/* ChatDatabase.cs
+ * Singleton Class to store all users and chatrooms
+ * Contains static method to deserialize byteArray to a Bitmap */
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+using System.IO;
 
 namespace DatabaseDLL
 {
@@ -416,6 +421,14 @@ namespace DatabaseDLL
             hashCode = hashCode * -1521134295 + EqualityComparer<SortedSet<Chatroom>>.Default.GetHashCode(Chatrooms);
             hashCode = hashCode * -1521134295 + EqualityComparer<List<PrivateChatroom>>.Default.GetHashCode(PrivateChatrooms);
             return hashCode;
+        }
+
+        /** Static method to serialize bitmap image **/
+        public static byte[] BitmapToByteArray(Bitmap bitmap) {
+            using (MemoryStream stream = new MemoryStream()) {
+                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                return stream.ToArray();
+            }
         }
 
         /// <summary>

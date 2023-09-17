@@ -1,4 +1,7 @@
-﻿using System;
+﻿/* Chatroom.cs
+ * Holds information for a chatroom.
+ * */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -16,9 +19,11 @@ namespace DatabaseDLL
         /// HashSet chosen to allow for unique usernames within chatroom.
         /// </summary>
         [DataMemberAttribute()]
-        public HashSet<User> users;
+        private HashSet<User> users;
         [DataMemberAttribute()]
-        public List<Message> messages;
+        private List<Message> messages;
+        private List<byte[]> sharedImages; //List of images shared between users
+        private List<byte[]> sharedTextFiles; //List of text files shared between users
 
         /// <summary>
         /// Chatroom Constructor
@@ -29,6 +34,8 @@ namespace DatabaseDLL
             this.name = name;
             users = new HashSet<User>();
             messages = new List<Message>();
+            sharedImages = new List<byte[]>();
+            sharedTextFiles = new List<byte[]>();
         }
 
         /// <summary>
@@ -57,6 +64,34 @@ namespace DatabaseDLL
             get { return messages; }
             set { messages = value; }
         }
+
+        /// <summary>
+        /// Returns entire list of shared images.
+        public List<byte[]> SharedImages {
+            get { return sharedImages; }
+            set { sharedImages = value; }
+        }
+
+        /// <summary>
+        /// Returns image by index.
+        public byte[] GetSharedImage(int index) {
+            return sharedImages[index];
+        }
+
+        /// <summary>
+        /// Returns entire list of shared text files.
+        public List<byte[]> SharedTextFiles {
+            get { return sharedTextFiles; }
+            set { sharedTextFiles = value; }
+        }
+
+        /// <summary>
+        /// Returns text file by index.
+        public byte[] GetSharedTextFile(int index) {
+            return sharedTextFiles[index];
+        }
+
+
 
         /// <summary>
         /// Add user to chatroom given username string.
