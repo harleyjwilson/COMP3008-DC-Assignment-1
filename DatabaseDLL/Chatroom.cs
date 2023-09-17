@@ -19,11 +19,11 @@ namespace DatabaseDLL
         /// HashSet chosen to allow for unique usernames within chatroom.
         /// </summary>
         [DataMemberAttribute()]
-        private HashSet<User> users;
+        protected HashSet<User> users;
         [DataMemberAttribute()]
-        private List<Message> messages;
-        private List<byte[]> sharedImages; //List of images shared between users
-        private List<byte[]> sharedTextFiles; //List of text files shared between users
+        protected List<Message> messages;
+        protected List<byte[]> sharedImages; //List of images shared between users
+        protected List<byte[]> sharedTextFiles; //List of text files shared between users
 
         /// <summary>
         /// Chatroom Constructor

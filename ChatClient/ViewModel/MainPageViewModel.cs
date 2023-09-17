@@ -17,9 +17,7 @@ namespace ChatClient.ViewModel
 
         public MainPageViewModel()
         {
-            
-            _database = new ChatDatabase();
-           // _database.GenerateFakeDatabase();
+            _database = ChatDatabase.Instance;
 
      
 
