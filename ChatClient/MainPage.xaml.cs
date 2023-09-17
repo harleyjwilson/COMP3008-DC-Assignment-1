@@ -19,10 +19,14 @@ namespace ChatClient
     /// </summary>
     public partial class MainPage : Window
     {
-        public MainPage()
+        public string Username { get; private set; }
+        public MainPage(string username)
         {
             InitializeComponent();
             DataContext = new ViewModel.MainPageViewModel();
+            Username = username;
+            GetUsername.Content = Username;
+            MessageBox.Show($"Received username: {Username}");
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)

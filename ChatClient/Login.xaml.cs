@@ -73,10 +73,10 @@ namespace ChatClient
 
         private void UpdateGui(User user)
         {
-            if (string.IsNullOrWhiteSpace(user.Username))
+            if (user == null || string.IsNullOrWhiteSpace(user.Username))
             {
-                
-                MainPage mainPage = new MainPage();
+                // Username not found in the database
+                MainPage mainPage = new MainPage(UserName.Text); // Use the text directly from the TextBox
                 mainPage.Show();
                 this.Close();
             }
@@ -84,6 +84,11 @@ namespace ChatClient
             {
                 MessageBox.Show("There is a same username!");
             }
+        }
+
+        private void UserName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

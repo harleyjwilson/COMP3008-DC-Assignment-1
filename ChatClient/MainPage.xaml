@@ -97,7 +97,8 @@
                         Margin="18,0,0,0" />
 
                 <StackPanel VerticalAlignment="Center">
-                    <Label Content="Username"
+                    <Label x:Name="GetUsername"
+                           Content="Username"
                            Foreground="White"
                            FontWeight="SemiBold"/>
 
