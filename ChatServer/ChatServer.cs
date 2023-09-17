@@ -27,32 +27,50 @@ namespace ChatServer
 
         public bool AddUser(string username)
         {
-            return db.AddUser(username);
+            Console.WriteLine($"Attempting to add user: {username}");
+            bool result = db.AddUser(username);
+            Console.WriteLine($"Add user result: {result}");
+            return result;
         }
 
         public bool RemoveUser(string username)
         {
-            return db.RemoveUser(username);
+            Console.WriteLine($"Attempting to remove user: {username}");
+            bool result = db.RemoveUser(username);
+            Console.WriteLine($"Remove user result: {result}");
+            return result;
         }
 
         public bool UserExists(string username)
         {
-            return db.UserExists(username);
+            Console.WriteLine($"Checking if user exists: {username}");
+            bool result = db.UserExists(username);
+            Console.WriteLine($"User exists result: {result}");
+            return result;
         }
 
         public bool AddChatroom(string roomName)
         {
-            return db.AddChatroom(roomName);
+            Console.WriteLine($"Attempting to add chatroom: {roomName}");
+            bool result = db.AddChatroom(roomName);
+            Console.WriteLine($"Add chatroom result: {result}");
+            return result;
         }
 
         public bool RemoveChatroom(string roomName)
         {
-            return db.RemoveChatroom(roomName);
+            Console.WriteLine($"Attempting to remove chatroom: {roomName}");
+            bool result = db.RemoveChatroom(roomName);
+            Console.WriteLine($"Remove chatroom result: {result}");
+            return result;
         }
 
         public bool ChatroomExists(string roomName)
         {
-            return db.ChatroomExists(roomName);
+            Console.WriteLine($"Checking if chatroom exists: {roomName}");
+            bool result = db.ChatroomExists(roomName);
+            Console.WriteLine($"Chatroom exists result: {result}");
+            return result;
         }
 
         /// <summary>
@@ -68,6 +86,7 @@ namespace ChatServer
         /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public bool AddPrivateChatroom(string roomName, string usernameOne, string usernameTwo)
         {
+            Console.WriteLine($"Attempting to add private chatroom: {roomName} between {usernameOne} and {usernameTwo}");
             User userOne = null;
             User userTwo = null;
 
@@ -90,8 +109,11 @@ namespace ChatServer
 
             if (userOne != null && userTwo != null)
             {
-                return db.AddPrivateChatroom(roomName, userOne, userTwo);
+                bool result = db.AddPrivateChatroom(roomName, userOne, userTwo);
+                Console.WriteLine($"Add private chatroom result: {result}");
+                return result;
             }
+            Console.WriteLine("Add private chatroom failed.");
             return false;
         }
 
@@ -105,6 +127,7 @@ namespace ChatServer
         /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public PrivateChatroom GetPrivateChatroom(string usernameOne, string usernameTwo)
         {
+            Console.WriteLine($"Attempting to get private chatroom between {usernameOne} and {usernameTwo}");
             User userOne = null;
             User userTwo = null;
 
@@ -127,22 +150,31 @@ namespace ChatServer
 
             try
             {
-                return db.GetPrivateChatroom(userOne, userTwo);
+                PrivateChatroom chatroom = db.GetPrivateChatroom(userOne, userTwo);
+                Console.WriteLine("Successfully retrieved private chatroom.");
+                return chatroom;
             }
             catch (KeyNotFoundException e)
             {
+                Console.WriteLine($"Failed to get private chatroom. Error: {e.Message}");
                 throw new FaultException<KeyNotFoundException>(e, new FaultReason(e.Message));
             }
         }
 
         public bool RemovePrivateChatroom(string roomName)
         {
-            return db.RemovePrivateChatroom(roomName);
+            Console.WriteLine($"Attempting to remove private chatroom: {roomName}");
+            bool result = db.RemovePrivateChatroom(roomName);
+            Console.WriteLine($"Remove private chatroom result: {result}");
+            return result;
         }
 
         public bool PrivateChatroomExists(string roomName)
         {
-            return db.PrivateChatroomExists(roomName);
+            Console.WriteLine($"Checking if private chatroom exists: {roomName}");
+            bool result = db.PrivateChatroomExists(roomName);
+            Console.WriteLine($"Private chatroom exists result: {result}");
+            return result;
         }
 
         /// <summary>
@@ -156,10 +188,13 @@ namespace ChatServer
         {
             try
             {
-                return db.SearchUserByName(username);
+                User user = db.SearchUserByName(username);
+                Console.WriteLine("User found.");
+                return user;
             }
             catch (KeyNotFoundException e)
             {
+                Console.WriteLine($"User not found. Error: {e.Message}");
                 throw new FaultException<KeyNotFoundException>(e, new FaultReason(e.Message));
             }
         }
@@ -173,12 +208,16 @@ namespace ChatServer
         /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public Chatroom SearchChatroomByName(string name)
         {
+            Console.WriteLine($"Searching for chatroom by name: {name}");
             try
             {
-                return db.SearchChatroomByName(name);
+                Chatroom chatroom = db.SearchChatroomByName(name);
+                Console.WriteLine("Chatroom found.");
+                return chatroom;
             }
             catch (KeyNotFoundException e)
             {
+                Console.WriteLine($"Chatroom not found. Error: {e.Message}");
                 throw new FaultException<KeyNotFoundException>(e, new FaultReason(e.Message));
             }
         }
@@ -194,10 +233,13 @@ namespace ChatServer
         {
             try
             {
-                return db.SearchPrivateChatroomByName(name);
+                PrivateChatroom chatroom = db.SearchPrivateChatroomByName(name);
+                Console.WriteLine("Private chatroom found.");
+                return chatroom;
             }
             catch (KeyNotFoundException e)
             {
+                Console.WriteLine($"Private chatroom not found. Error: {e.Message}");
                 throw new FaultException<KeyNotFoundException>(e, new FaultReason(e.Message));
             }
         }
@@ -288,6 +330,7 @@ namespace ChatServer
         /// <returns></returns>
         /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public List<SharedFile> GetAllSharedFilesFromChatroom(string roomName) {
+            Console.WriteLine($"Attempting to add shared file to chatroom: {roomName}");
             try {
                 return db.GetAllSharedFilesFromChatroom(roomName);
             } catch (KeyNotFoundException e) {
