@@ -1,166 +1,117 @@
 ﻿/* Chatroom.cs
  * Holds information for a chatroom.
+ * Including shared files
  * */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DatabaseDLL
-{
-    [DataContractAttribute]
-    public class Chatroom
-    {
-        [DataMemberAttribute()]
-        public string name;
+namespace DatabaseDLL {
+    /// <summary>
+    /// Represents a chatroom with users, messages, and shared files.
+    /// </summary>
+    [DataContract]
+    public class Chatroom {
+
+        [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public HashSet<User> Users { get; set; } = new HashSet<User>();
+
+        [DataMember]
+        public List<Message> Messages { get; set; } = new List<Message>();
+
+        [DataMember]
+        public List<SharedFile> SharedFiles { get; set; } = new List<SharedFile>();
+
+        public Chatroom(string name) {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+        }
+
         /// <summary>
-        /// HashSet chosen to allow for unique usernames within chatroom.
+        /// Adds a shared file to the chatroom.
         /// </summary>
-        [DataMemberAttribute()]
-        protected HashSet<User> users;
-        [DataMemberAttribute()]
-        protected List<Message> messages;
-        protected List<byte[]> sharedImages; //List of images shared between users
-        protected List<byte[]> sharedTextFiles; //List of text files shared between users
+        /// <param name="file">The file to add.</param>
+        /// <returns>True if the file was added successfully, otherwise false.</returns>
+        public bool AddSharedFile(SharedFile file) {
+            if (file == null) return false;
+            SharedFiles.Add(file);
+            return true;
+        }
 
         /// <summary>
-        /// Chatroom Constructor
+        /// Removes a shared file from the chatroom by its name.
         /// </summary>
-        /// <param name="name">string</param>
-        public Chatroom(string name)
-        {
-            this.name = name;
-            users = new HashSet<User>();
-            messages = new List<Message>();
-            sharedImages = new List<byte[]>();
-            sharedTextFiles = new List<byte[]>();
+        /// <param name="fileName">The name of the file to remove.</param>
+        /// <returns>True if the file was removed successfully, otherwise false.</returns>
+        public bool RemoveSharedFile(string fileName) {
+            var file = SharedFiles.FirstOrDefault(f => f.FileName == fileName);
+            return file != null && SharedFiles.Remove(file);
         }
 
         /// <summary>
-        /// Name properties setter and getter.
+        /// Retrieves a shared file from the chatroom by its name.
         /// </summary>
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+        /// <param name="fileName">The name of the file to retrieve.</param>
+        /// <returns>The shared file if found, otherwise null.</returns>
+        public SharedFile GetSharedFile(string fileName) => SharedFiles.FirstOrDefault(f => f.FileName == fileName);
 
         /// <summary>
-        /// Users properties setter and getter.
+        /// Retrieves all shared files in the chatroom.
         /// </summary>
-        public HashSet<User> Users
-        {
-            get { return users; }
-            set { users = value; }
-        }
+        /// <returns>A list of all shared files.</returns>
+        public List<SharedFile> GetAllSharedFiles() => SharedFiles;
 
         /// <summary>
-        /// Messages properties setter and getter.
+        /// Adds a user to the chatroom.
         /// </summary>
-        public List<Message> Messages
-        {
-            get { return messages; }
-            set { messages = value; }
-        }
+        /// <param name="username">The username of the user to add.</param>
+        /// <returns>True if the user was added successfully, otherwise false.</returns>
+        public bool AddUser(string username) => Users.Add(new User(username));
 
         /// <summary>
-        /// Returns entire list of shared images.
-        public List<byte[]> SharedImages {
-            get { return sharedImages; }
-            set { sharedImages = value; }
-        }
-
-        /// <summary>
-        /// Returns image by index.
-        public byte[] GetSharedImage(int index) {
-            return sharedImages[index];
-        }
-
-        /// <summary>
-        /// Returns entire list of shared text files.
-        public List<byte[]> SharedTextFiles {
-            get { return sharedTextFiles; }
-            set { sharedTextFiles = value; }
-        }
-
-        /// <summary>
-        /// Returns text file by index.
-        public byte[] GetSharedTextFile(int index) {
-            return sharedTextFiles[index];
-        }
-
-
-
-        /// <summary>
-        /// Add user to chatroom given username string.
+        /// Removes a user from the chatroom.
         /// </summary>
-        /// <param name="username">string username</param>
-        /// <returns>Return true if successful, false if not.</returns>
-        public Boolean AddUser(string username)
-        {
-            return users.Add(new User(username));
+        /// <param name="username">The username of the user to remove.</param>
+        /// <returns>True if the user was removed successfully, otherwise false.</returns>
+        public bool RemoveUser(string username) => Users.Remove(new User(username));
+
+        /// <summary>
+        /// Adds a message to the chatroom.
+        /// </summary>
+        /// <param name="message">The message to add.</param>
+        public void AddMessage(Message message) {
+            if (message != null) {
+                Messages.Add(message);
+            }
         }
 
         /// <summary>
-        /// Remove user from chatroom via username string.
+        /// Determines whether the specified object is equal to the current object.
         /// </summary>
-        /// <param name="username">string username</param>
-        /// <returns>Return true if successful, false if not.</returns>
-        public Boolean RemoveUser(string username)
-        {
-            return users.Remove(new User(username));
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns>True if the objects are equal, otherwise false.</returns>
+        public override bool Equals(object obj) {
+            return obj is Chatroom chatroom && Name == chatroom.Name;
         }
 
         /// <summary>
-        /// Add message to end of Message List.
+        /// Serves as the default hash function.
         /// </summary>
-        /// <param name="message">Message message</param>
-        public void AddMessage(Message message)
-        {
-            messages.Add(message);
+        /// <returns>A hash code for the current object.</returns>
+        public override int GetHashCode() {
+            return Name != null ? Name.GetHashCode() : 0;
         }
 
         /// <summary>
-        /// Generated Equals method.
+        /// Returns a string that represents the current object.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            return obj is Chatroom chatroom &&
-                   name == chatroom.name &&
-                   EqualityComparer<HashSet<User>>.Default.Equals(users, chatroom.users) &&
-                   EqualityComparer<List<Message>>.Default.Equals(messages, chatroom.messages) &&
-                   Name == chatroom.Name &&
-                   EqualityComparer<HashSet<User>>.Default.Equals(Users, chatroom.Users) &&
-                   EqualityComparer<List<Message>>.Default.Equals(Messages, chatroom.Messages);
-        }
-
-        /// <summary>
-        /// Generated GetHashCode method.
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            int hashCode = -1686499012;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<HashSet<User>>.Default.GetHashCode(users);
-            hashCode = hashCode * -1521134295 + EqualityComparer<List<Message>>.Default.GetHashCode(messages);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<HashSet<User>>.Default.GetHashCode(Users);
-            hashCode = hashCode * -1521134295 + EqualityComparer<List<Message>>.Default.GetHashCode(Messages);
-            return hashCode;
-        }
-
-        /// <summary>
-        /// Generated ToString method.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return base.ToString();
+        /// <returns>A string representation of the object.</returns>
+        public override string ToString() {
+            return $"Chatroom: {Name}, Users: {Users.Count}, Messages: {Messages.Count}, SharedFiles: {SharedFiles.Count}";
         }
     }
 }
