@@ -29,16 +29,17 @@
 
             <!-- TextBox for user input -->
             <TextBox x:Name="UserName" 
-                     Text="Type the user" 
+                     Text="Enter username" 
                      HorizontalAlignment="Center" 
                      VerticalAlignment="Center"
                      Width="300" Height="40" 
                      Foreground="Black"
                      Padding="10"
-                     FontSize="16" TextChanged="UserName_TextChanged"/>
+                     FontSize="16"
+                     GotFocus="UserName_GotFocus"/>
 
             <!-- Button for user action -->
-            <Button Content="Get User" 
+            <Button Content="Login or Create Account" 
                     HorizontalAlignment="Center" 
                     Grid.Row="1"
                     Width="200"

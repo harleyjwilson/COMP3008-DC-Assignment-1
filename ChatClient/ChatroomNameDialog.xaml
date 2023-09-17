@@ -21,7 +21,8 @@
                  Width="200" Height="35" 
                  Foreground="Black"
                  Padding="10"
-                 FontSize="10"/>
+                 FontSize="10"
+                 GotFocus="ChatroomNameTextBox_GotFocus"/>
 
         <!-- StackPanel for buttons -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">

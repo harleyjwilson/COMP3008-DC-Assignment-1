@@ -22,7 +22,7 @@ namespace ChatServer
         public ChatServer()
         {
             db = ChatDatabase.Instance;
-            DBGenerator.GenerateFakeDatabase(db); //populate database with fake data
+            //DBGenerator.GenerateFakeDatabase(db); //populate database with fake data - DEBUG ONLY
         }
 
         public bool AddUser(string username)

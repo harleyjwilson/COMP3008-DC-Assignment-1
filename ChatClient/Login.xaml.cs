@@ -43,6 +43,10 @@ namespace ChatClient
 
             string inputUserName = UserName.Text;
 
+            if (UserName.Text.Equals("")) {
+                MessageBox.Show("Username cannot be blank.");
+                return;
+            }
 
             User user = await Task.Run(() => GetUserByUsername(inputUserName));
             UpdateGui(user);
@@ -71,6 +75,10 @@ namespace ChatClient
             return user;
         }
 
+        /// <summary>
+        /// Checks if a name already exists if not opens a new page
+        /// </summary>
+        /// <param name="user"></param>
         private void UpdateGui(User user)
         {
             if (user == null || string.IsNullOrWhiteSpace(user.Username))
@@ -82,13 +90,19 @@ namespace ChatClient
             }
             else
             {
-                MessageBox.Show("There is a same username!");
+                MessageBox.Show("This username is already in use.");
             }
         }
 
-        private void UserName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
+        /// <summary>
+        /// Clears text when clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UserName_GotFocus(object sender, EventArgs e) {
+            if (UserName.Text.Equals("Enter username")) {
+                UserName.Text = "";
+            }
         }
     }
 }

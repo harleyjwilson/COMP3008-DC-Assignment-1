@@ -26,6 +26,10 @@ namespace ChatClient
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
             ChatroomName = ChatroomNameTextBox.Text;
+            if (ChatroomName.Equals("")) {
+                MessageBox.Show("Name cannot be blank.");
+                return;
+            }
             this.DialogResult = true;
             this.Close();
         }
@@ -34,6 +38,17 @@ namespace ChatClient
         {
             this.DialogResult = false;
             this.Close();
+        }
+
+        /// <summary>
+        /// Clears text when clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChatroomNameTextBox_GotFocus(object sender, EventArgs e) {
+            if (ChatroomNameTextBox.Text.Equals("Type the chatroom name")) {
+                ChatroomNameTextBox.Text = "";
+            }
         }
     }
 }
