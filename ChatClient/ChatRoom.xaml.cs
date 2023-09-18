@@ -77,7 +77,7 @@ namespace ChatClient
             {
                 // Fetch the list of active users in the current chat room
                 var usersList = await Task.Run(() => chatServer.ListUsersInChatroom(ChatroomName));
-
+                var messageList = await Task.Run(() => chatServer.ListMessagesInChatroom(ChatroomName));
                 var viewModel = DataContext as ViewModel.ChatRoomViewModel;
                 if (viewModel != null)
                 {
@@ -85,6 +85,11 @@ namespace ChatClient
                     foreach (var user in usersList)
                     {
                         viewModel.Users.Add(user);
+                    }
+                    viewModel.Messages.Clear();
+                    foreach (var message in messageList)
+                    {
+                        viewModel.Messages.Add(message);
                     }
                 }
             }

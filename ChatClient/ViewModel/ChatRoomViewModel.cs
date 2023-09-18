@@ -14,6 +14,7 @@ namespace ChatClient.ViewModel
 
         public ObservableCollection<Chatroom> Chatrooms { get; set; }
         public ObservableCollection<User> Users { get; set; }
+        public ObservableCollection<Message> Messages { get; set; }
 
 
         public ChatRoomViewModel()
@@ -23,6 +24,7 @@ namespace ChatClient.ViewModel
 
             Chatrooms = new ObservableCollection<Chatroom>();
             Users = new ObservableCollection<User>();
+            Messages = new ObservableCollection<Message>();
 
 
         }
