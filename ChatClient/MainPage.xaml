@@ -84,7 +84,8 @@
                       Background="Transparent"
                       BorderThickness="0"
                       Grid.Row="1"
-                      ItemContainerStyle="{StaticResource ContactCard}"/>
+                      ItemContainerStyle="{StaticResource ContactCard}"
+                      SelectionChanged="ChatroomListView_SelectionChanged"/>
 
 
             <StackPanel Grid.Row="2"
