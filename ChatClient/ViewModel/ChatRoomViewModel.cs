@@ -20,8 +20,7 @@ namespace ChatClient.ViewModel
         public ObservableCollection<User> Users { get; set; }
         public ObservableCollection<Message> Messages { get; set; }
 
-        
-
+        public ObservableCollection<SharedFile> SharedFiles { get; set; } = new ObservableCollection<SharedFile>();
         public ChatRoomViewModel()
         {
             _database = ChatDatabase.Instance;

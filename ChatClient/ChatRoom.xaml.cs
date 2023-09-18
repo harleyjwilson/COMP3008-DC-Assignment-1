@@ -1,7 +1,9 @@
 ﻿using DatabaseDLL;
 using IChatServerInterfaceDLL;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
@@ -44,6 +46,17 @@ namespace ChatClient
             GetChatRoomName.Content = ChatroomName;
             UsernameLabel.Content = Username;
     
+        }
+
+        /// <summary>
+        /// Clears text when clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MessageTyping_GotFocus(object sender, EventArgs e) {
+            if (MessageTyping.Text.Equals("Enter message here:")) {
+                MessageTyping.Text = "";
+            }
         }
         /// Handle the mouse down event to enable dragging of the window.
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -129,9 +142,62 @@ namespace ChatClient
 
         /// Handle the file sharing button click to upload a file.
 
-        private async void UploadButton_Click(object sender, RoutedEventArgs e)
-        {
-            //This is for file sharing button.
+        //private async void UploadButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    //This is for file sharing button.
+        //}
+
+        private void UploadButton_Click(object sender, RoutedEventArgs e) {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text files (*.txt)|*.txt|Bitmap Files (*.bmp)|*.bmp";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            if (openFileDialog.ShowDialog() == true) {
+                string selectedFilePath = openFileDialog.FileName;
+                chatServer.AddSharedFileToChatroom(ChatroomName, chatServer.CreateSharedFile(selectedFilePath));
+            }
+        }
+
+        // Refresh the list of shared files in the chatroom
+        private async void RefreshSharedFilesButton_Click(object sender, RoutedEventArgs e) {
+            try {
+                var sharedFilesList = await Task.Run(() => chatServer.GetAllSharedFilesFromChatroom(ChatroomName));
+                var viewModel = DataContext as ViewModel.ChatRoomViewModel;
+                if (viewModel != null) {
+                    viewModel.SharedFiles.Clear();
+                    foreach (var file in sharedFilesList) {
+                        viewModel.SharedFiles.Add(file);
+                    }
+                }
+            } catch (Exception ex) {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e) {
+            // Get the clicked item
+            var item = ((FrameworkElement)e.OriginalSource).DataContext as SharedFile;
+            if (item != null) {
+                // Call the method to download the file
+                DownloadFile(item);
+            }
+        }
+
+        private void DownloadFile(SharedFile sharedFile) {
+            try {
+                // Fetch the file data from the server
+                var fileData = chatServer.GetSharedFileFromChatroom(ChatroomName, sharedFile.FileName);
+                // Create a SaveFileDialog to let the user specify where to save the file
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.FileName = sharedFile.FileName;
+                saveFileDialog.Filter = "Text files (*.txt)|*.txt|Bitmap Files (*.bmp)|*.bmp";
+                if (saveFileDialog.ShowDialog() == true) {
+                    // Save the file to the specified path
+                    File.WriteAllBytes(saveFileDialog.FileName, fileData.FileData);
+                }
+            } catch (Exception ex) {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
         }
 
     }
