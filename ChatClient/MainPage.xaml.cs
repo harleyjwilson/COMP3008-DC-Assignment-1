@@ -135,9 +135,12 @@ namespace ChatClient
         {
             if (e.AddedItems != null && e.AddedItems.Count > 0)
             {
-                var selectedChatroom = e.AddedItems[0] as Chatroom; // Assuming you have a Chatroom class or equivalent
+                var selectedChatroom = e.AddedItems[0] as Chatroom;
                 if (selectedChatroom != null)
                 {
+                 
+       
+
                     // Navigate to ChatRoom.xaml page and pass the chatroom name as argument
                     ChatRoom chatRoomWindow = new ChatRoom(selectedChatroom.Name);
                     chatRoomWindow.Show();

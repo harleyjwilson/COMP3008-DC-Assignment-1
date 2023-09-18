@@ -86,5 +86,9 @@ namespace IChatServerInterfaceDLL
         [OperationContract]
         [FaultContract(typeof(KeyNotFoundException))]
         List<SharedFile> GetAllSharedFilesFromChatroom(string roomName);
+
+
+
+
     }
 }

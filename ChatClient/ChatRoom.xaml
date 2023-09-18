@@ -76,7 +76,8 @@
 
 
 
-        <ListView ItemsSource="{Binding UserBinding}"
+            <ListView x:Name="UsersListView"
+                      ItemsSource="{Binding Users}"
                       Background="Transparent"
                       BorderThickness="0"
                       Grid.Row="1"

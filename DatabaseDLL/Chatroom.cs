@@ -113,5 +113,8 @@ namespace DatabaseDLL {
         public override string ToString() {
             return $"Chatroom: {Name}, Users: {Users.Count}, Messages: {Messages.Count}, SharedFiles: {SharedFiles.Count}";
         }
+
+
+
     }
 }

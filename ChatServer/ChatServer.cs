@@ -339,5 +339,7 @@ namespace ChatServer
                 throw new FaultException<KeyNotFoundException>(e, new FaultReason("Chatroom not found."));
             }
         }
+
+
     }
 }

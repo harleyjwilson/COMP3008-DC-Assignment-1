@@ -1,6 +1,8 @@
-﻿using System;
+﻿using IChatServerInterfaceDLL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,16 +21,25 @@ namespace ChatClient
     /// </summary>
     public partial class ChatRoom : Window
     {
+        private IChatServerInterface channel;
         public string ChatroomName { get; private set; }
         public ChatRoom(string chatroomName)
         {
             InitializeComponent();
+            ChannelFactory<IChatServerInterface> channelFact;
+            NetTcpBinding tcp = new NetTcpBinding();
+
+            string URL = "net.tcp://localhost:8100/ChatService";
+            channelFact = new ChannelFactory<IChatServerInterface>(tcp, URL);
+            channel = channelFact.CreateChannel();
             DataContext = new ViewModel.MainPageViewModel();
 
             // Store the chatroom name
             ChatroomName = chatroomName;
 
             GetChatRoomName.Content = ChatroomName;
+
+    
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -58,6 +69,7 @@ namespace ChatClient
             this.Close();
 
         }
+
 
     }
 }
