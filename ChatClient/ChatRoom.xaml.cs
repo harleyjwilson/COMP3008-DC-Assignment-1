@@ -1,6 +1,8 @@
-﻿using System;
+﻿using IChatServerInterfaceDLL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,10 +21,25 @@ namespace ChatClient
     /// </summary>
     public partial class ChatRoom : Window
     {
-        public ChatRoom()
+        private IChatServerInterface channel;
+        public string ChatroomName { get; private set; }
+        public ChatRoom(string chatroomName)
         {
             InitializeComponent();
+            ChannelFactory<IChatServerInterface> channelFact;
+            NetTcpBinding tcp = new NetTcpBinding();
+
+            string URL = "net.tcp://localhost:8100/ChatService";
+            channelFact = new ChannelFactory<IChatServerInterface>(tcp, URL);
+            channel = channelFact.CreateChannel();
             DataContext = new ViewModel.MainPageViewModel();
+
+            // Store the chatroom name
+            ChatroomName = chatroomName;
+
+            GetChatRoomName.Content = ChatroomName;
+
+    
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -52,31 +69,7 @@ namespace ChatClient
             this.Close();
 
         }
-        // Add the event handler here:
-        private void CreateChatroomButton_Click(object sender, RoutedEventArgs e)
-        {
-            var database = (DataContext as ViewModel.MainPageViewModel)._database; // Access the database from ViewModel
 
-            var dialog = new ChatroomNameDialog();
-            if (dialog.ShowDialog() == true)
-            {
-                var newChatroomName = dialog.ChatroomName;
-                if (string.IsNullOrWhiteSpace(newChatroomName))
-                {
-                    MessageBox.Show("Please enter a valid chatroom name.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
 
-                if (database.ChatroomExists(newChatroomName))
-                {
-                    MessageBox.Show($"Chatroom '{newChatroomName}' already exists. Please choose a different name.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                database.AddChatroom(newChatroomName);
-                var viewModel = DataContext as ViewModel.MainPageViewModel;
-                viewModel.Chatrooms.Add(database.SearchChatroomByName(newChatroomName));
-            }
-        }
     }
 }

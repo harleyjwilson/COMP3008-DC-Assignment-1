@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DatabaseDLL;
 using IChatServerInterfaceDLL;
 
 namespace ChatClient
@@ -129,6 +130,23 @@ namespace ChatClient
                 viewModel.Chatrooms.Add(chat);
             }
 
-        }   
+        }
+        private void ChatroomListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems != null && e.AddedItems.Count > 0)
+            {
+                var selectedChatroom = e.AddedItems[0] as Chatroom;
+                if (selectedChatroom != null)
+                {
+                 
+       
+
+                    // Navigate to ChatRoom.xaml page and pass the chatroom name as argument
+                    ChatRoom chatRoomWindow = new ChatRoom(selectedChatroom.Name);
+                    chatRoomWindow.Show();
+                    this.Close();
+                }
+            }
+        }
     }
 }

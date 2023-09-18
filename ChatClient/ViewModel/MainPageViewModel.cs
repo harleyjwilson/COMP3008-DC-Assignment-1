@@ -19,9 +19,10 @@ namespace ChatClient.ViewModel
         {
             _database = ChatDatabase.Instance;
 
-     
-
+    
             Chatrooms = new ObservableCollection<Chatroom>();
+
+
         }
     }
 }

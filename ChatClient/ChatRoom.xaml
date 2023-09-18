@@ -76,7 +76,8 @@
 
 
 
-        <ListView ItemsSource="{Binding Chatrooms}"
+            <ListView x:Name="UsersListView"
+                      ItemsSource="{Binding Users}"
                       Background="Transparent"
                       BorderThickness="0"
                       Grid.Row="1"
@@ -121,11 +122,12 @@
             <Grid HorizontalAlignment="Stretch"
                       Margin="8">
 
-                <Label Content="@Username"
-                           Foreground="White"
-                           FontWeight="Bold"
-                           Margin="5,0,5,0"
-                           VerticalAlignment="Center" />
+            <Label x:Name="GetChatRoomName" 
+                   Content="@ChatRoomName"
+                   Foreground="White"
+                   FontWeight="Bold"
+                   Margin="5,0,5,0"
+                   VerticalAlignment="Center" />
 
                 <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Right">
