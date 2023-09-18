@@ -11,6 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IChatServerInterfaceDLL", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseDLL", "DatabaseDLL\DatabaseDLL.csproj", "{F747E6D1-76B4-4B17-9DD1-9D3F0D415414}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsAssignment1", "TestProject1\TestsAssignment1.csproj", "{C122BAF2-6D23-41B6-9684-D8EC677FF59A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5259793B-C3C3-4424-A018-11FDA795D3A8} = {5259793B-C3C3-4424-A018-11FDA795D3A8}
+		{E178821B-3CAD-428E-A96B-1AD21748527C} = {E178821B-3CAD-428E-A96B-1AD21748527C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +39,10 @@ Global
 		{F747E6D1-76B4-4B17-9DD1-9D3F0D415414}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F747E6D1-76B4-4B17-9DD1-9D3F0D415414}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F747E6D1-76B4-4B17-9DD1-9D3F0D415414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C122BAF2-6D23-41B6-9684-D8EC677FF59A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C122BAF2-6D23-41B6-9684-D8EC677FF59A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C122BAF2-6D23-41B6-9684-D8EC677FF59A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C122BAF2-6D23-41B6-9684-D8EC677FF59A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
