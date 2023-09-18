@@ -78,7 +78,7 @@
                    Foreground="Gray"
                    Margin="8,0,0,0"/>
 
-           
+
 
             <ListView ItemsSource="{Binding Chatrooms}"
                       Background="Transparent"
@@ -150,10 +150,10 @@
 
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="212.5"/>
                     <RowDefinition Height="Auto"/>
                     <!-- Setting this to Auto will ensure the row only takes as much space as the button needs -->
-                    <RowDefinition Height="*"/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <!-- TextBlock for the welcome message -->
@@ -180,6 +180,19 @@
                     Grid.Row="1"
                     Click="CreateChatroomButton_Click"
                     />
+
+                <Button Content="Refresh Button"
+                    Width="220"
+                    Height="80"
+                    Background="#98FF98"
+                    BorderBrush="Black"
+                    BorderThickness="2"
+            
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Grid.Row="2"
+                    Click="CreateRefreshButton_Click"
+                    />
             </Grid>
 
 
@@ -189,7 +202,7 @@
                     <ColumnDefinition Width="90"/>
                 </Grid.ColumnDefinitions>
 
-                
+
 
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"

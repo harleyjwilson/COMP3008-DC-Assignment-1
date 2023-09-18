@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using IChatServerInterfaceDLL;
 
 namespace ChatClient
 {
@@ -20,13 +22,25 @@ namespace ChatClient
     public partial class MainPage : Window
     {
         public string Username { get; private set; }
+        private IChatServerInterface chatServer;
+        public static readonly string chatUrl = "net.tcp://localhost:8100/ChatService";
         public MainPage(string username)
         {
             InitializeComponent();
+
+    
+
+            // Create connection to chatroom server
+            NetTcpBinding tcp = new NetTcpBinding();
+            ChannelFactory<IChatServerInterface> chatroomChannelFactory = new ChannelFactory<IChatServerInterface>(tcp, chatUrl);
+            chatServer = chatroomChannelFactory.CreateChannel();
+
+
             DataContext = new ViewModel.MainPageViewModel();
             Username = username;
             GetUsername.Content = Username;
             MessageBox.Show($"Received username: {Username}");
+
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -57,9 +71,9 @@ namespace ChatClient
 
         }
         // Add the event handler here:
-        private void CreateChatroomButton_Click(object sender, RoutedEventArgs e)
+        private async void CreateChatroomButton_Click(object sender, RoutedEventArgs e)
         {
-            var database = (DataContext as ViewModel.MainPageViewModel)._database; // Access the database from ViewModel
+            //var await Task.Run(() => ChatServer = (DataContext as ViewModel.MainPageViewModel)._await Task.Run(() => ChatServer; // Access the await Task.Run(() => ChatServer from ViewModel
 
             var dialog = new ChatroomNameDialog();
             if (dialog.ShowDialog() == true)
@@ -71,15 +85,18 @@ namespace ChatClient
                     return;
                 }
 
-                if (database.ChatroomExists(newChatroomName))
+                if (await Task.Run(() => chatServer.ChatroomExists(newChatroomName)))
                 {
                     MessageBox.Show($"Chatroom '{newChatroomName}' already exists. Please choose a different name.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                database.AddChatroom(newChatroomName);
+                //Add to db
+                await Task.Run(() => chatServer.AddChatroom(newChatroomName));
+                
+                // Update GUI
                 var viewModel = DataContext as ViewModel.MainPageViewModel;
-                viewModel.Chatrooms.Add(database.SearchChatroomByName(newChatroomName));
+                viewModel.Chatrooms.Add(await Task.Run(() => chatServer.SearchChatroomByName(newChatroomName)));
             }
         }
 
@@ -94,5 +111,21 @@ namespace ChatClient
             // Close the current window
             this.Close();
         }
+
+        private async void CreateRefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+           // var await Task.Run(() => ChatServer = (DataContext as ViewModel.MainPageViewModel)._await Task.Run(() => ChatServer;
+
+
+            var viewModel = DataContext as ViewModel.MainPageViewModel;
+            var chatRoomList = await Task.Run(() => chatServer.ListChatRooms());
+            viewModel.Chatrooms.Clear();
+
+            foreach (var chat in chatRoomList)
+            {
+                viewModel.Chatrooms.Add(chat);
+            }
+
+        }   
     }
 }
