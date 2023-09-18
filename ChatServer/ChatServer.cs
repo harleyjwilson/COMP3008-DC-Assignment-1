@@ -254,7 +254,7 @@ namespace ChatServer
             return db.GetChatroomNames();
         }*/
 
-        public List<Chatroom> ListChatRooms() { return db.ListChatRoom(); }
+        public List<Chatroom> ListChatRooms() { return db.ListChatRooms(); }
 
         /// <summary>
         /// Search for User by string. If successful, get allowed private

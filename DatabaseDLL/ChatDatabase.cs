@@ -100,6 +100,9 @@ namespace DatabaseDLL {
         public string[] GetChatroomNames() => Chatrooms.Select(r => r.Name).ToArray();
         public string[] GetAllowedPrivateChatroomNames(User user) => PrivateChatrooms.Where(r => r.AllowedUsers.Contains(user)).Select(r => r.Name).OrderBy(n => n).ToArray();
 
+        public List<Chatroom> ListChatRooms() => Chatrooms.ToList();
+        
+
         /* Wrappers for file sharing methods in classroom */
 
         /// <summary>
