@@ -39,8 +39,6 @@ namespace ChatClient
         }
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            //HelloLabel.Content = "Getting User...";
-
             string inputUserName = UserName.Text;
 
             if (UserName.Text.Equals("")) {
@@ -66,7 +64,7 @@ namespace ChatClient
             catch (Exception ex) when (ex is FaultException<KeyNotFoundException> || ex is KeyNotFoundException || ex is FaultException)
             {
                 user = new User("");
-                channel.AddUser(username); //if user does not exist add them TODO: need to remove user from list when logout is clicked
+                channel.AddUser(username);
             }
             catch (Exception ex) when (ex is CommunicationException)
             {

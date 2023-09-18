@@ -39,11 +39,10 @@
                      GotFocus="UserName_GotFocus"/>
 
             <!-- Button for user action -->
-            <Button Content="Login or Create Account" 
-                    HorizontalAlignment="Center" 
-                    Grid.Row="1"
-                    Width="200"
-                    Click="Button_Click"/>
+            <Button Content="Login" 
+                    HorizontalAlignment="Center"
+                    Width="130"
+                    Click="Button_Click" Margin="0,334,0,0" Grid.RowSpan="2"/>
         </Grid>
 
     </Grid>
