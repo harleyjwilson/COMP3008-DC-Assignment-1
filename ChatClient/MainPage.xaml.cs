@@ -138,8 +138,8 @@ namespace ChatClient
                 var selectedChatroom = e.AddedItems[0] as Chatroom;
                 if (selectedChatroom != null)
                 {
-                 
-       
+                    // Add the user to the chatroom
+                    chatServer.AddUserToChatroom(Username, selectedChatroom.Name);
 
                     // Navigate to ChatRoom.xaml page and pass the chatroom name as argument
                     ChatRoom chatRoomWindow = new ChatRoom(selectedChatroom.Name);

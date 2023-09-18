@@ -76,15 +76,22 @@
 
 
 
-            <ListView x:Name="UsersListView"
+            <ListView
                       ItemsSource="{Binding Users}"
                       Background="Transparent"
                       BorderThickness="0"
                       Grid.Row="1"
-                      ItemContainerStyle="{StaticResource ContactCard}"/>
+                      ItemContainerStyle="{StaticResource ChatRoomCard}"/>
+
+            <Button Content="Refresh"
+                    Width="100"
+                    Height="30"
+                    Margin="5"
+                    Click="RefreshUsersButton_Click"
+                    Grid.Row="1"/>
 
 
-        <StackPanel Grid.Row="2"
+            <StackPanel Grid.Row="2"
                         Orientation="Horizontal"
                         Background="#292B2F">
 

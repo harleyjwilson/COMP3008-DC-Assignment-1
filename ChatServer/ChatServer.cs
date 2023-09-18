@@ -340,6 +340,36 @@ namespace ChatServer
             }
         }
 
+        public bool AddUserToChatroom(string username, string roomName)
+        {
+            var user = SearchUserByName(username);
+            var chatroom = SearchChatroomByName(roomName);
+            return chatroom.Users.Add(user);
+        }
 
+        public bool RemoveUserFromChatroom(string username, string roomName)
+        {
+            var user = SearchUserByName(username);
+            var chatroom = SearchChatroomByName(roomName);
+            return chatroom.Users.Remove(user);
+        }
+
+        public HashSet<User> ListUsersInChatroom(string roomName)
+        {
+            // Search for the chatroom by its name
+            Chatroom chatroom;
+            try
+            {
+                chatroom = db.SearchChatroomByName(roomName);
+            }
+            catch (KeyNotFoundException e)
+            {
+                Console.WriteLine($"Chatroom {roomName} not found. Error: {e.Message}");
+                throw new FaultException<KeyNotFoundException>(e, new FaultReason(e.Message));
+            }
+
+            // Return the list of users in that chatroom
+            return chatroom.Users;
+        }
     }
 }
