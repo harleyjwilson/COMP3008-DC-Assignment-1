@@ -103,6 +103,9 @@ namespace ChatClient
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
+            // Delete active User
+            chatServer.RemoveUser(Username);
+            
             // Create an instance of the Login window
             MainWindow loginWindow = new MainWindow();
 
