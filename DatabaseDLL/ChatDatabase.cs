@@ -137,6 +137,25 @@ namespace DatabaseDLL {
             chatroom.AddMessage(message);
         }
 
+        public bool AddUserToChatroom(User user, Chatroom chatroom)
+        {
+            if (!chatroom.Users.Contains(user))
+            {
+                chatroom.Users.Add(user);
+                return true;
+            }
+            return false;
+        }
+
+
+
+        public bool RemoveUserFromChatroom(string username, string roomName)
+        {
+            Chatroom chatroom = SearchChatroomByName(roomName);
+            return chatroom.RemoveUser(username);
+  
+        }
+
     }
 
 }

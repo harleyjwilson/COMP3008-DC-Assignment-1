@@ -42,7 +42,7 @@ namespace ChatClient
             Username = username;
 
             GetChatRoomName.Content = ChatroomName;
-
+            UsernameLabel.Content = Username;
     
         }
 
@@ -70,6 +70,7 @@ namespace ChatClient
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            chatServer.RemoveUserFromChatroom(Username, ChatroomName);
             this.Close();
 
         }
@@ -78,11 +79,11 @@ namespace ChatClient
         {
             //var await Task.Run(() => ChatServer = (DataContext as ViewModel.MainPageViewModel)._await Task.Run(() => ChatServer; // Access the await Task.Run(() => ChatServer from ViewModel
 
-            var messageText = ABCBox.Text;
+            var messageText = MessageTyping.Text;
 
             if (string.IsNullOrWhiteSpace(messageText))
             {
-                MessageBox.Show("Please enter a valid chatroom name.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a valid text.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -90,6 +91,11 @@ namespace ChatClient
             User user = chatServer.SearchUserByName(Username);
             Message message = new Message(user, messageText);
             await Task.Run(() => chatServer.AddMessageToChatroom(ChatroomName, message));
+
+            // Add to ViewModel's Messages collection
+            var viewModel = DataContext as ViewModel.ChatRoomViewModel;
+            viewModel?.Messages.Add(message);
+
 
             // Update GUI
             //var viewModel = DataContext as ViewModel.MainPageViewModel;
@@ -124,5 +130,7 @@ namespace ChatClient
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
+
+        
     }
 }

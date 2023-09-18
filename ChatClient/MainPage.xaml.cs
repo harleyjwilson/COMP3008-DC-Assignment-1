@@ -144,7 +144,7 @@ namespace ChatClient
                     // Navigate to ChatRoom.xaml page and pass the chatroom name as argument
                     ChatRoom chatRoomWindow = new ChatRoom(selectedChatroom.Name, Username);
                     chatRoomWindow.Show();
-                    this.Close();
+                    
                 }
             }
         }
