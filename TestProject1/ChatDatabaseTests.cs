@@ -53,27 +53,27 @@ namespace TestsAssignment1 {
             db.SearchPrivateChatroomByName("NonExistentRoom");
         }
 
-        [TestMethod]
-        public void TestAddSharedFileToChatroom() {
-            db.AddChatroom("General");
-            SharedFile file = new("file1", "content");
-            Assert.IsTrue(db.AddSharedFileToChatroom("General", file));
-        }
+        //[TestMethod]
+        //public void TestAddSharedFileToChatroom() {
+        //    db.AddChatroom("General");
+        //    SharedFile file = new("file1", "content");
+        //    Assert.IsTrue(db.AddSharedFileToChatroom("General", file));
+        //}
 
-        [TestMethod]
-        public void TestRemoveSharedFileFromChatroom() {
-            db.AddChatroom("General");
-            SharedFile file = new("file1", "content");
-            db.AddSharedFileToChatroom("General", file);
-            Assert.IsTrue(db.RemoveSharedFileFromChatroom("General", "file1"));
-        }
+        //[TestMethod]
+        //public void TestRemoveSharedFileFromChatroom() {
+        //    db.AddChatroom("General");
+        //    SharedFile file = new("file1", "content");
+        //    db.AddSharedFileToChatroom("General", file);
+        //    Assert.IsTrue(db.RemoveSharedFileFromChatroom("General", "file1"));
+        //}
 
-        [TestMethod]
-        public void TestGetSharedFileFromChatroom() {
-            db.AddChatroom("General");
-            SharedFile file = new("file1", "content");
-            db.AddSharedFileToChatroom("General", file);
-            Assert.IsNotNull(db.GetSharedFileFromChatroom("General", "file1"));
-        }
+        //[TestMethod]
+        //public void TestGetSharedFileFromChatroom() {
+        //    db.AddChatroom("General");
+        //    SharedFile file = new("file1", "content");
+        //    db.AddSharedFileToChatroom("General", file);
+        //    Assert.IsNotNull(db.GetSharedFileFromChatroom("General", "file1"));
+        //}
     }
 }

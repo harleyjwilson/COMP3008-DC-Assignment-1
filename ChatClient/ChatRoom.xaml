@@ -8,17 +8,19 @@
         Title="ChatRoom" Height="650" Width="1200"
         Background="#36393f">
     <Grid>
-    <Grid.RowDefinitions>
-        <RowDefinition Height="25"/>
-        <RowDefinition/>
-    </Grid.RowDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-    <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="200"/>
-        <ColumnDefinition />
-    </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
 
-    <Border Grid.ColumnSpan="2"
+        <Border Grid.ColumnSpan="2"
                 Background="#252525"
                 MouseDown="Border_MouseDown">
 
@@ -172,9 +174,8 @@
                 <TextBox x:Name="MessageTyping"
                     Grid.Row="1"
                     Height="50"
-                    Text="type the message"
-                         
-                    
+                    Text="Enter message here:"
+                    GotFocus="MessageTyping_GotFocus"                    
                     Grid.ColumnSpan="2"/>
 
             <StackPanel Orientation="Horizontal"
@@ -211,13 +212,32 @@
                         />
                             
                         </Button>
-                        
-
-
+                
             </StackPanel>
 
         </Grid>
 
     </Grid>
+        <!-- ListView for Shared Files -->
+        <ListView Grid.Column="2" Grid.Row="1"
+          ItemsSource="{Binding SharedFiles}"
+          Background="Transparent"
+          BorderThickness="0"
+          MouseDoubleClick="ListViewItem_MouseDoubleClick">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Uploaded Files" DisplayMemberBinding="{Binding FileName}" Width="100"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <!-- Refresh Files button -->
+        <Button Content="Refresh Files"
+            Width="100"
+            Height="30"
+            Grid.Column="2"
+            Grid.Row="1"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Center"
+            Click="RefreshSharedFilesButton_Click"/>
     </Grid>
 </Window>

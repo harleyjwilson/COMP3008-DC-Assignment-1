@@ -11,11 +11,6 @@ using System.Threading.Tasks;
 namespace DatabaseDLL {
     [DataContractAttribute]
     public class SharedFile {
-
-        public SharedFile(string fileName, string fileType) {
-            this.FileName = fileName;
-            this.FileType = fileType;
-        }
         [DataMemberAttribute()]
         public string FileName { get; set; }
         [DataMemberAttribute()]

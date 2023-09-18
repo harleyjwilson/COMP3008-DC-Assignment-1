@@ -2,6 +2,8 @@
 using IChatServerInterfaceDLL;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
@@ -238,6 +240,49 @@ namespace ChatServer
         }
 
         /* FileManagement methods */
+
+        /// <summary>
+        /// Creates a sharedfile
+        /// </summary>
+        /// <param name="selectedFilePath"></param>
+        /// <returns></returns>
+        public SharedFile CreateSharedFile(string selectedFilePath) {
+            string fileExtension = System.IO.Path.GetExtension(selectedFilePath);
+
+            byte[] fileData = null;
+            string fileType = "";
+
+            if (fileExtension == ".txt") {
+                fileType = "text";
+                string fileContent = File.ReadAllText(selectedFilePath);
+                fileData = Encoding.UTF8.GetBytes(fileContent);
+            }
+            else if (fileExtension == ".bmp") {
+                fileType = "bitmap";
+        // Use the helper method to convert the bitmap to a byte array
+        using (Bitmap bitmap = new Bitmap(selectedFilePath)) {
+            fileData = BitmapToByteArray(bitmap);
+        }
+            }
+
+            // Create a new shared file
+            SharedFile newFile = new SharedFile {
+                FileName = System.IO.Path.GetFileName(selectedFilePath),
+                FileType = fileType,
+                FileData = fileData
+            };
+            return newFile;
+        }
+
+        /** Helper method to serialize bitmap image **/
+        private byte[] BitmapToByteArray(Bitmap bitmap) {
+            using (MemoryStream stream = new MemoryStream()) {
+                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                return stream.ToArray();
+            }
+        }
+
+
         /// Add File to Chatroom
 
         public bool AddSharedFileToChatroom(string roomName, SharedFile file) {
@@ -247,7 +292,6 @@ namespace ChatServer
                 throw new FaultException<KeyNotFoundException>(e, new FaultReason("Chatroom not found."));
             }
         }
-
 
         /// Remove file from chatroom
 
@@ -290,15 +334,10 @@ namespace ChatServer
 
         public bool RemoveUserFromChatroom(string username, string roomName)
         {
-            
-
-
             Console.WriteLine($"Attempting to remove user: {username}");
             bool result = db.RemoveUserFromChatroom(username, roomName);
             Console.WriteLine($"Remove user result: {result}");
             return result;
-
-
         }
 
         public HashSet<User> ListUsersInChatroom(string roomName)
