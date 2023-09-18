@@ -101,9 +101,10 @@
                         Margin="18,0,0,0" />
 
             <StackPanel VerticalAlignment="Center">
-                <Label Content="Username"
-                           Foreground="White"
-                           FontWeight="SemiBold"/>
+                <Label x:Name="UsernameLabel"
+                       Content="Username"
+                       Foreground="White"
+                       FontWeight="SemiBold"/>
 
 
 
@@ -150,21 +151,30 @@
 
 
             </Grid>
+            
+            
+            
         </Border>
 
-        
+            <ListView Grid.Row="1"
+                      ItemsSource="{Binding Messages}"               
+                      Background="Transparent"
+                      BorderThickness="0"
+                      ItemContainerStyle="{StaticResource MessageBox}"/>
 
 
-        <Grid Grid.Row="2">
+            <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="90"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Row="1"
+                <TextBox x:Name="MessageTyping"
+                    Grid.Row="1"
                     Height="50"
-                    Text="Message @Username"
-                    Style="{StaticResource MessageBox}"
+                    Text="type the message"
+                         
+                    
                     Grid.ColumnSpan="2"/>
 
             <StackPanel Orientation="Horizontal"
@@ -178,10 +188,19 @@
                            RenderOptions.BitmapScalingMode="Fant"
                            Margin="5,5,5,0"/>
 
-                <Image Source="./Icons/send_low.png"
-                           Width="20" Height="20"
-                           RenderOptions.BitmapScalingMode="Fant"
-                           Margin="5,5,16,0"/>
+                <Button Grid.Column="1"
+                        Command="{Binding SendMessageCommand}"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Click="SendButton_Click">
+                        <Image Source="./Icons/send_low.png"
+                               Width="20" Height="20"
+                               RenderOptions.BitmapScalingMode="Fant"
+                               Margin="5,5,16,0"
+                        />
+                            
+                        </Button>
+                        
 
 
             </StackPanel>

@@ -349,9 +349,15 @@ namespace ChatServer
 
         public bool RemoveUserFromChatroom(string username, string roomName)
         {
-            var user = SearchUserByName(username);
-            var chatroom = SearchChatroomByName(roomName);
-            return chatroom.Users.Remove(user);
+            
+
+
+            Console.WriteLine($"Attempting to remove user: {username}");
+            bool result = db.RemoveUserFromChatroom(username, roomName);
+            Console.WriteLine($"Remove user result: {result}");
+            return result;
+
+
         }
 
         public HashSet<User> ListUsersInChatroom(string roomName)
@@ -371,5 +377,31 @@ namespace ChatServer
             // Return the list of users in that chatroom
             return chatroom.Users;
         }
+
+        public void AddMessageToChatroom(string roomName, Message message)
+        {
+            var chatroom = SearchChatroomByName(roomName);
+            chatroom.AddMessage(message);
+        }
+
+        public List<Message> ListMessagesInChatroom(string roomName)
+        {
+            // Search for the chatroom by its name
+            Chatroom chatroom;
+            try
+            {
+                chatroom = db.SearchChatroomByName(roomName);
+            }
+            catch (KeyNotFoundException e)
+            {
+                Console.WriteLine($"Chatroom {roomName} not found. Error: {e.Message}");
+                throw new FaultException<KeyNotFoundException>(e, new FaultReason(e.Message));
+            }
+
+            // Return the list of users in that chatroom
+            return chatroom.Messages;
+        }
+
+
     }
 }

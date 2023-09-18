@@ -1,4 +1,5 @@
-﻿using IChatServerInterfaceDLL;
+﻿using DatabaseDLL;
+using IChatServerInterfaceDLL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace ChatClient
         private IChatServerInterface chatServer;
         public static readonly string chatUrl = "net.tcp://localhost:8100/ChatService";
         public string ChatroomName { get; private set; }
-        public ChatRoom(string chatroomName)
+        public string Username { get; private set; }
+        public ChatRoom(string chatroomName, string username)
         {
             InitializeComponent();
             ChannelFactory<IChatServerInterface> channelFact;
@@ -37,9 +39,10 @@ namespace ChatClient
 
             // Store the chatroom name
             ChatroomName = chatroomName;
+            Username = username;
 
             GetChatRoomName.Content = ChatroomName;
-
+            UsernameLabel.Content = Username;
     
         }
 
@@ -67,8 +70,36 @@ namespace ChatClient
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            chatServer.RemoveUserFromChatroom(Username, ChatroomName);
             this.Close();
 
+        }
+
+        private async void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            //var await Task.Run(() => ChatServer = (DataContext as ViewModel.MainPageViewModel)._await Task.Run(() => ChatServer; // Access the await Task.Run(() => ChatServer from ViewModel
+
+            var messageText = MessageTyping.Text;
+
+            if (string.IsNullOrWhiteSpace(messageText))
+            {
+                MessageBox.Show("Please enter a valid text.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            //Add to db
+            User user = chatServer.SearchUserByName(Username);
+            Message message = new Message(user, messageText);
+            await Task.Run(() => chatServer.AddMessageToChatroom(ChatroomName, message));
+
+            // Add to ViewModel's Messages collection
+            var viewModel = DataContext as ViewModel.ChatRoomViewModel;
+            viewModel?.Messages.Add(message);
+
+
+            // Update GUI
+            //var viewModel = DataContext as ViewModel.MainPageViewModel;
+            //viewModel.Chatrooms.Add(await Task.Run(() => chatServer.SearchChatroomByName(newChatroomName)));
         }
 
         private async void RefreshUsersButton_Click(object sender, RoutedEventArgs e)
@@ -77,7 +108,7 @@ namespace ChatClient
             {
                 // Fetch the list of active users in the current chat room
                 var usersList = await Task.Run(() => chatServer.ListUsersInChatroom(ChatroomName));
-
+                var messageList = await Task.Run(() => chatServer.ListMessagesInChatroom(ChatroomName));
                 var viewModel = DataContext as ViewModel.ChatRoomViewModel;
                 if (viewModel != null)
                 {
@@ -85,6 +116,11 @@ namespace ChatClient
                     foreach (var user in usersList)
                     {
                         viewModel.Users.Add(user);
+                    }
+                    viewModel.Messages.Clear();
+                    foreach (var message in messageList)
+                    {
+                        viewModel.Messages.Add(message);
                     }
                 }
             }
@@ -94,5 +130,7 @@ namespace ChatClient
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
+
+        
     }
 }

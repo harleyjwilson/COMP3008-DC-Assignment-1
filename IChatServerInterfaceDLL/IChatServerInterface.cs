@@ -97,5 +97,10 @@ namespace IChatServerInterfaceDLL
         [OperationContract]
         HashSet<User> ListUsersInChatroom(string roomName);
 
+        [OperationContract]
+        List<Message> ListMessagesInChatroom(string roomName);
+
+        [OperationContract]
+        void AddMessageToChatroom(string roomName, Message message);
     }
 }
