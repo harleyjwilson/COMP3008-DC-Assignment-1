@@ -142,7 +142,7 @@ namespace ChatClient
                     chatServer.AddUserToChatroom(Username, selectedChatroom.Name);
 
                     // Navigate to ChatRoom.xaml page and pass the chatroom name as argument
-                    ChatRoom chatRoomWindow = new ChatRoom(selectedChatroom.Name);
+                    ChatRoom chatRoomWindow = new ChatRoom(selectedChatroom.Name, Username);
                     chatRoomWindow.Show();
                     this.Close();
                 }

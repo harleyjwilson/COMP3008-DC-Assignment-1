@@ -131,8 +131,11 @@ namespace DatabaseDLL {
             var chatroom = SearchChatroomByName(roomName);
             return chatroom.GetAllSharedFiles();
         }
-
-
+        public void AddMessageToChatroom(string roomName, Message message)
+        {
+            var chatroom = SearchChatroomByName(roomName);
+            chatroom.AddMessage(message);
+        }
 
     }
 

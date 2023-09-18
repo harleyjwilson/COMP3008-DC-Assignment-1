@@ -100,5 +100,7 @@ namespace IChatServerInterfaceDLL
         [OperationContract]
         List<Message> ListMessagesInChatroom(string roomName);
 
+        [OperationContract]
+        void AddMessageToChatroom(string roomName, Message message);
     }
 }

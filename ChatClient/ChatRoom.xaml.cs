@@ -1,4 +1,5 @@
-﻿using IChatServerInterfaceDLL;
+﻿using DatabaseDLL;
+using IChatServerInterfaceDLL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace ChatClient
         private IChatServerInterface chatServer;
         public static readonly string chatUrl = "net.tcp://localhost:8100/ChatService";
         public string ChatroomName { get; private set; }
-        public ChatRoom(string chatroomName)
+        public string Username { get; private set; }
+        public ChatRoom(string chatroomName, string username)
         {
             InitializeComponent();
             ChannelFactory<IChatServerInterface> channelFact;
@@ -37,6 +39,7 @@ namespace ChatClient
 
             // Store the chatroom name
             ChatroomName = chatroomName;
+            Username = username;
 
             GetChatRoomName.Content = ChatroomName;
 
@@ -69,6 +72,28 @@ namespace ChatClient
         {
             this.Close();
 
+        }
+
+        private async void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            //var await Task.Run(() => ChatServer = (DataContext as ViewModel.MainPageViewModel)._await Task.Run(() => ChatServer; // Access the await Task.Run(() => ChatServer from ViewModel
+
+            var messageText = ABCBox.Text;
+
+            if (string.IsNullOrWhiteSpace(messageText))
+            {
+                MessageBox.Show("Please enter a valid chatroom name.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            //Add to db
+            User user = chatServer.SearchUserByName(Username);
+            Message message = new Message(user, messageText);
+            await Task.Run(() => chatServer.AddMessageToChatroom(ChatroomName, message));
+
+            // Update GUI
+            //var viewModel = DataContext as ViewModel.MainPageViewModel;
+            //viewModel.Chatrooms.Add(await Task.Run(() => chatServer.SearchChatroomByName(newChatroomName)));
         }
 
         private async void RefreshUsersButton_Click(object sender, RoutedEventArgs e)
