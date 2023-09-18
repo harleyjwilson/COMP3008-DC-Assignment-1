@@ -88,7 +88,14 @@ namespace IChatServerInterfaceDLL
         List<SharedFile> GetAllSharedFilesFromChatroom(string roomName);
 
 
+        [OperationContract]
+        bool AddUserToChatroom(string username, string roomName);
 
+        [OperationContract]
+        bool RemoveUserFromChatroom(string username, string roomName);
+
+        [OperationContract]
+        HashSet<User> ListUsersInChatroom(string roomName);
 
     }
 }

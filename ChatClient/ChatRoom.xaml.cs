@@ -21,7 +21,8 @@ namespace ChatClient
     /// </summary>
     public partial class ChatRoom : Window
     {
-        private IChatServerInterface channel;
+        private IChatServerInterface chatServer;
+        public static readonly string chatUrl = "net.tcp://localhost:8100/ChatService";
         public string ChatroomName { get; private set; }
         public ChatRoom(string chatroomName)
         {
@@ -31,8 +32,8 @@ namespace ChatClient
 
             string URL = "net.tcp://localhost:8100/ChatService";
             channelFact = new ChannelFactory<IChatServerInterface>(tcp, URL);
-            channel = channelFact.CreateChannel();
-            DataContext = new ViewModel.MainPageViewModel();
+            chatServer = channelFact.CreateChannel();
+            DataContext = new ViewModel.ChatRoomViewModel();
 
             // Store the chatroom name
             ChatroomName = chatroomName;
@@ -70,6 +71,28 @@ namespace ChatClient
 
         }
 
+        private async void RefreshUsersButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Fetch the list of active users in the current chat room
+                var usersList = await Task.Run(() => chatServer.ListUsersInChatroom(ChatroomName));
 
+                var viewModel = DataContext as ViewModel.ChatRoomViewModel;
+                if (viewModel != null)
+                {
+                    viewModel.Users.Clear();
+                    foreach (var user in usersList)
+                    {
+                        viewModel.Users.Add(user);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or display it to the user
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
     }
 }
