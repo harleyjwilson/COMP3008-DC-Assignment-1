@@ -49,7 +49,7 @@ namespace ChatClient
             }
 
             User user = await Task.Run(() => GetUserByUsername(inputUserName));
-            UpdateGui(user);
+            Login(user);
 
             
 
@@ -61,12 +61,12 @@ namespace ChatClient
             User user;
             try
             {
-                //string username = "User 1";
                 user = channel.SearchUserByName(username);
             }
             catch (Exception ex) when (ex is FaultException<KeyNotFoundException> || ex is KeyNotFoundException || ex is FaultException)
             {
                 user = new User("");
+                channel.AddUser(username); //if user does not exist add them TODO: need to remove user from list when logout is clicked
             }
             catch (Exception ex) when (ex is CommunicationException)
             {
@@ -79,19 +79,15 @@ namespace ChatClient
         /// Checks if a name already exists if not opens a new page
         /// </summary>
         /// <param name="user"></param>
-        private void UpdateGui(User user)
+        private void Login(User user)
         {
-            if (user == null || string.IsNullOrWhiteSpace(user.Username))
-            {
-                // Username not found in the database
-                MainPage mainPage = new MainPage(UserName.Text); // Use the text directly from the TextBox
-                mainPage.Show();
-                this.Close();
-            }
-            else
-            {
+            if (channel.UserExists(user.Username)) {
                 MessageBox.Show("This username is already in use.");
+                return;
             }
+            MainPage mainPage = new MainPage(UserName.Text); // Use the text directly from the TextBox
+            mainPage.Show();
+            this.Close();
         }
 
         /// <summary>

@@ -66,7 +66,25 @@ namespace IChatServerInterfaceDLL
         [OperationContract]
         List<Chatroom> ListChatRooms();
 
+        /* FileManagement methods */
+
         [OperationContract]
         string[] GetAllowedPrivateChatroomNames(string username);
+
+        [OperationContract]
+        [FaultContract(typeof(KeyNotFoundException))]
+        bool AddSharedFileToChatroom(string roomName, SharedFile file);
+
+        [OperationContract]
+        [FaultContract(typeof(KeyNotFoundException))]
+        bool RemoveSharedFileFromChatroom(string roomName, string fileName);
+
+        [OperationContract]
+        [FaultContract(typeof(KeyNotFoundException))]
+        SharedFile GetSharedFileFromChatroom(string roomName, string fileName);
+
+        [OperationContract]
+        [FaultContract(typeof(KeyNotFoundException))]
+        List<SharedFile> GetAllSharedFilesFromChatroom(string roomName);
     }
 }

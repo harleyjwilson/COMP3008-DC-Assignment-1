@@ -2,122 +2,75 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DatabaseDLL
-{
+namespace DatabaseDLL {
     /// <summary>
-    /// PrivateChatroom extends Chatroom, and operates as a direct message functionality.
-    /// This is a chatroom where only two users can access. The names of the private
-    /// chatroom do not have to be unique as they are not accessible to all users.
-    /// This allows users with the private chatroom to name it whatever they want. 
+    /// Represents a private chatroom that extends the Chatroom class.
+    /// This chatroom is designed for direct messaging between two users.
     /// </summary>
-    [DataContractAttribute]
-    public class PrivateChatroom : Chatroom
-    {
+    [DataContract]
+    public class PrivateChatroom : Chatroom {
         /// <summary>
-        /// HashSet chosed to allow for unique usernames
+        /// Gets or sets the allowed users in the private chatroom.
         /// </summary>
-        [DataMemberAttribute()]
-        public HashSet<User> allowedUsers;
+        [DataMember]
+        public HashSet<User> AllowedUsers { get; set; } = new HashSet<User>();
 
         /// <summary>
-        /// PrivateChatroom constructor given private chatroom name.
+        /// Initializes a new instance of the PrivateChatroom class with a given name.
         /// </summary>
-        /// <param name="name"></param>
-        public PrivateChatroom(string name) : base(name)
-        {
-            allowedUsers = new HashSet<User>();
+        /// <param name="name">The name of the private chatroom.</param>
+        public PrivateChatroom(string name) : base(name) {
         }
 
         /// <summary>
-        /// PrivateChatroom constructor given private chatroom name and two users.
+        /// Initializes a new instance of the PrivateChatroom class with a given name and two users.
         /// </summary>
-        /// <param name="roomname">string roomname</param>
-        /// <param name="userOne">User userOne</param>
-        /// <param name="userTwo">User useTwo</param>
-        public PrivateChatroom(string roomname, User userOne, User userTwo) : base(roomname)
-        {
-            allowedUsers = new HashSet<User>();
-            // Add users via the below AddAllowedUsers methods.
+        /// <param name="roomname">The name of the private chatroom.</param>
+        /// <param name="userOne">The first user.</param>
+        /// <param name="userTwo">The second user.</param>
+        public PrivateChatroom(string roomname, User userOne, User userTwo) : base(roomname) {
             AddAllowedUser(userOne);
             AddAllowedUser(userTwo);
         }
 
         /// <summary>
-        /// AllowedUsers property setter and getters.
+        /// Adds a user to the allowed users list.
         /// </summary>
-        public HashSet<User> AllowedUsers
-        {
-            get { return allowedUsers; }
-            set { allowedUsers = value; }
-        }
-
-        /// <summary>
-        /// Adds User to AllowedUser property. Only allowed to add if a unique
-        /// username, as well as there are no more than two users already added.
-        /// If invalid, throw ArgumentException.
-        /// </summary>
-        /// <param name="user"></param>
-        /// <exception cref="ArgumentException"></exception>
-        public void AddAllowedUser(User user)
-        {
-            if (allowedUsers.Count >= 2)
-            {
+        /// <param name="user">The user to add.</param>
+        /// <exception cref="ArgumentException">Thrown when the chatroom is already at capacity.</exception>
+        public void AddAllowedUser(User user) {
+            if (AllowedUsers.Count >= 2) {
                 throw new ArgumentException("Private chatroom already at capacity.");
             }
-            else
-            {
-                allowedUsers.Add(user);
-            }
+            AllowedUsers.Add(user);
         }
 
         /// <summary>
-        /// Generated Equals method.
+        /// Determines whether the specified object is equal to the current object.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns>True if the objects are equal, otherwise false.</returns>
+        public override bool Equals(object obj) {
             return obj is PrivateChatroom chatroom &&
                    base.Equals(obj) &&
-                   name == chatroom.name &&
-                   EqualityComparer<HashSet<User>>.Default.Equals(users, chatroom.users) &&
-                   EqualityComparer<List<Message>>.Default.Equals(messages, chatroom.messages) &&
-                   Name == chatroom.Name &&
-                   EqualityComparer<HashSet<User>>.Default.Equals(Users, chatroom.Users) &&
-                   EqualityComparer<List<Message>>.Default.Equals(Messages, chatroom.Messages) &&
-                   EqualityComparer<HashSet<User>>.Default.Equals(allowedUsers, chatroom.allowedUsers) &&
-                   EqualityComparer<HashSet<User>>.Default.Equals(AllowedUsers, chatroom.AllowedUsers);
+                   AllowedUsers.SetEquals(chatroom.AllowedUsers);
         }
 
         /// <summary>
-        /// Generated GetHashCode method.
+        /// Serves as the default hash function.
         /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            int hashCode = -2079731012;
-            hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<HashSet<User>>.Default.GetHashCode(users);
-            hashCode = hashCode * -1521134295 + EqualityComparer<List<Message>>.Default.GetHashCode(messages);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<HashSet<User>>.Default.GetHashCode(Users);
-            hashCode = hashCode * -1521134295 + EqualityComparer<List<Message>>.Default.GetHashCode(Messages);
-            hashCode = hashCode * -1521134295 + EqualityComparer<HashSet<User>>.Default.GetHashCode(allowedUsers);
-            hashCode = hashCode * -1521134295 + EqualityComparer<HashSet<User>>.Default.GetHashCode(AllowedUsers);
-            return hashCode;
+        /// <returns>A hash code for the current object.</returns>
+        public override int GetHashCode() {
+            return base.GetHashCode() ^ AllowedUsers.GetHashCode();
         }
 
         /// <summary>
-        /// Genereated ToString method.
+        /// Returns a string that represents the current object.
         /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return base.ToString();
+        /// <returns>A string representation of the object.</returns>
+        public override string ToString() {
+            return $"PrivateChatroom: {Name}, Allowed Users: {string.Join(", ", AllowedUsers.Select(u => u.Username))}";
         }
     }
 }

@@ -48,6 +48,7 @@
     <Compile Include="PrivateChatroom.cs" />
     <Compile Include="Chatroom.cs" />
     <Compile Include="Message.cs" />
+    <Compile Include="SharedFile.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
