@@ -17,9 +17,7 @@ using System.Windows.Shapes;
 
 namespace ChatClient
 {
-    /// <summary>
     /// Interaction logic for ChatRoom.xaml
-    /// </summary>
     public partial class ChatRoom : Window
     {
         private IChatServerInterface chatServer;
@@ -29,6 +27,8 @@ namespace ChatClient
         public ChatRoom(string chatroomName, string username)
         {
             InitializeComponent();
+
+            // Initialize connection to the chat server
             ChannelFactory<IChatServerInterface> channelFact;
             NetTcpBinding tcp = new NetTcpBinding();
 
@@ -37,7 +37,7 @@ namespace ChatClient
             chatServer = channelFact.CreateChannel();
             DataContext = new ViewModel.ChatRoomViewModel();
 
-            // Store the chatroom name
+            // Store the chatroom name and username
             ChatroomName = chatroomName;
             Username = username;
 
@@ -45,18 +45,18 @@ namespace ChatClient
             UsernameLabel.Content = Username;
     
         }
-
+        /// Handle the mouse down event to enable dragging of the window.
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
-
+        /// Minimize the window.
         private void ButtonMinimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
         }
-
+        /// Toggle between window's maximized and normal states.
         private void WindowStateButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.WindowState == WindowState.Maximized)
@@ -67,17 +67,16 @@ namespace ChatClient
                 this.WindowState = WindowState.Maximized;
         }
 
-
+        /// Close the ChatRoom window.
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             chatServer.RemoveUserFromChatroom(Username, ChatroomName);
             this.Close();
 
         }
-
+        /// Send a message to the chatroom.
         private async void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            //var await Task.Run(() => ChatServer = (DataContext as ViewModel.MainPageViewModel)._await Task.Run(() => ChatServer; // Access the await Task.Run(() => ChatServer from ViewModel
 
             var messageText = MessageTyping.Text;
 
@@ -87,21 +86,18 @@ namespace ChatClient
                 return;
             }
 
-            //Add to db
+            // Add the message to the database
             User user = chatServer.SearchUserByName(Username);
             Message message = new Message(user, messageText);
             await Task.Run(() => chatServer.AddMessageToChatroom(ChatroomName, message));
 
-            // Add to ViewModel's Messages collection
+            // Update the ViewModel's Messages collection
             var viewModel = DataContext as ViewModel.ChatRoomViewModel;
             viewModel?.Messages.Add(message);
 
 
-            // Update GUI
-            //var viewModel = DataContext as ViewModel.MainPageViewModel;
-            //viewModel.Chatrooms.Add(await Task.Run(() => chatServer.SearchChatroomByName(newChatroomName)));
         }
-
+        /// Refresh the list of active users and messages in the chatroom.
         private async void RefreshUsersButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -131,6 +127,12 @@ namespace ChatClient
             }
         }
 
-        
+        /// Handle the file sharing button click to upload a file.
+
+        private async void UploadButton_Click(object sender, RoutedEventArgs e)
+        {
+            //This is for file sharing button.
+        }
+
     }
 }
