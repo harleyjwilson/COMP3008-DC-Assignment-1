@@ -13,9 +13,9 @@ namespace DatabaseDLL {
         public SortedSet<Chatroom> Chatrooms { get; set; }
         public List<PrivateChatroom> PrivateChatrooms { get; set; }
 
-        /// <summary>
-        /// Private constructor to initialize collections
-        /// </summary>
+        /// Private constructor to prevent multiple instances.
+        /// Initializes users, chatrooms, and private chatrooms collections.
+
         private ChatDatabase() {
             /* Using default string comparison for SortedSet */
             Users = new SortedSet<User>(Comparer<User>.Create((a, b) => a.Username.CompareTo(b.Username)));
@@ -69,12 +69,7 @@ namespace DatabaseDLL {
             return false;
         }
 
-        /// <summary>
-        /// Search for chatroom by name
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        /// <exception cref="KeyNotFoundException"></exception>
+
         public PrivateChatroom SearchPrivateChatroomByName(string name) {
             var room = PrivateChatrooms.FirstOrDefault(r => r.Name == name);
             if (room != null) {
@@ -83,19 +78,10 @@ namespace DatabaseDLL {
             throw new KeyNotFoundException("Private chatroom not found.");
         }
 
-        /// <summary>
-        /// Search user by name
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        /// <exception cref="KeyNotFoundException"></exception>
         public User SearchUserByName(string name) => Users.FirstOrDefault(u => u.Username == name) ?? throw new KeyNotFoundException("User not found.");
         public Chatroom SearchChatroomByName(string name) => Chatrooms.FirstOrDefault(r => r.Name == name) ?? throw new KeyNotFoundException("Chatroom not found.");
 
-        /// <summary>
-        /// Methods to get names as string arrays
-        /// </summary>
-        /// <returns></returns>
+
         public string[] GetUserNames() => Users.Select(u => u.Username).ToArray();
         public string[] GetChatroomNames() => Chatrooms.Select(r => r.Name).ToArray();
         public string[] GetAllowedPrivateChatroomNames(User user) => PrivateChatrooms.Where(r => r.AllowedUsers.Contains(user)).Select(r => r.Name).OrderBy(n => n).ToArray();
@@ -103,15 +89,6 @@ namespace DatabaseDLL {
         public List<Chatroom> ListChatRooms() => Chatrooms.ToList();
         
 
-        /* Wrappers for file sharing methods in classroom */
-
-        /// <summary>
-        /// Usage: Add the shared file to the "General" chatroom
-        /// db.AddSharedFileToChatroom("General", newFile);
-        /// </summary>
-        /// <param name="roomName"></param>
-        /// <param name="file"></param>
-        /// <returns></returns>
         public bool AddSharedFileToChatroom(string roomName, SharedFile file) {
             var chatroom = SearchChatroomByName(roomName);
             return chatroom.AddSharedFile(file);
@@ -131,12 +108,13 @@ namespace DatabaseDLL {
             var chatroom = SearchChatroomByName(roomName);
             return chatroom.GetAllSharedFiles();
         }
+        /* Methods for messages in chatrooms */
         public void AddMessageToChatroom(string roomName, Message message)
         {
             var chatroom = SearchChatroomByName(roomName);
             chatroom.AddMessage(message);
         }
-
+        /* Methods for users in chatrooms */
         public bool AddUserToChatroom(User user, Chatroom chatroom)
         {
             if (!chatroom.Users.Contains(user))

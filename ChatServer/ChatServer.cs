@@ -16,15 +16,13 @@ namespace ChatServer
     {
         ChatDatabase db;
 
-        /// <summary>
         /// ChatServer Constructor. 
-        /// </summary>
         public ChatServer()
         {
             db = ChatDatabase.Instance;
             //DBGenerator.GenerateFakeDatabase(db); //populate database with fake data - DEBUG ONLY
         }
-
+        /* Methods for managing users */
         public bool AddUser(string username)
         {
             Console.WriteLine($"Attempting to add user: {username}");
@@ -73,17 +71,8 @@ namespace ChatServer
             return result;
         }
 
-        /// <summary>
-        /// Take strings for room name, and two usernames. Searches for users,
-        /// throws FaultException<KeyNotFoundException>if not found. If both
-        /// users searched successfully, attempt to add private chatroom, return
-        /// success as a boolean value.
-        /// </summary>
-        /// <param name="roomName">string roomName</param>
-        /// <param name="usernameOne">string usernameOne</param>
-        /// <param name="usernameTwo">string usernameTwo</param>
-        /// <returns>boolean of whether successfully added</returns>
-        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
+
+        /* Methods for managing private chatrooms */
         public bool AddPrivateChatroom(string roomName, string usernameOne, string usernameTwo)
         {
             Console.WriteLine($"Attempting to add private chatroom: {roomName} between {usernameOne} and {usernameTwo}");
@@ -117,14 +106,9 @@ namespace ChatServer
             return false;
         }
 
-        /// <summary>
+   
         /// Get private chatroom based on two users. If no private chatroom
         /// exists between two users, throw KeyNotFoundException.
-        /// </summary>
-        /// <param name="usernameOne">string usernameOne</param>
-        /// <param name="usernameTwo">string usernameTwo</param>
-        /// <returns>boolean of whether successfully added</returns>
-        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public PrivateChatroom GetPrivateChatroom(string usernameOne, string usernameTwo)
         {
             Console.WriteLine($"Attempting to get private chatroom between {usernameOne} and {usernameTwo}");
@@ -177,13 +161,8 @@ namespace ChatServer
             return result;
         }
 
-        /// <summary>
+
         /// Search for User by string. Either return User or throw
-        /// FaultException<KeyNotFoundException> if unsuccessful.
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
-        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public User SearchUserByName(string username)
         {
             try
@@ -199,13 +178,8 @@ namespace ChatServer
             }
         }
 
-        /// <summary>
+
         /// Search for Chatroom by string. Either return Chatroom or throw
-        /// FaultException<KeyNotFoundException> if unsuccessful.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public Chatroom SearchChatroomByName(string name)
         {
             Console.WriteLine($"Searching for chatroom by name: {name}");
@@ -222,13 +196,8 @@ namespace ChatServer
             }
         }
 
-        /// <summary>
+
         /// Search for PrivateChatroom by string. Either return PrivateChatroom or throw
-        /// FaultException<KeyNotFoundException> if unsuccessful.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
         public PrivateChatroom SearchPrivateChatroomByName(string name)
         {
             try
@@ -249,21 +218,11 @@ namespace ChatServer
             return db.GetUserNames();
         }
 
-       /* public string[] GetChatroomNames()
-        {
-            return db.GetChatroomNames();
-        }*/
 
         public List<Chatroom> ListChatRooms() { return db.ListChatRooms(); }
 
-        /// <summary>
-        /// Search for User by string. If successful, get allowed private
-        /// chatrooms. Throw FaultException<KeyNotFoundException>
-        /// if unsuccessful.
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
-        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
+
+        /// Search for User by string. If successful, get allowed private chatroom
         public string[] GetAllowedPrivateChatroomNames(string username)
         {
             User user;
@@ -279,14 +238,8 @@ namespace ChatServer
         }
 
         /* FileManagement methods */
-
-        /// <summary>
         /// Add File to Chatroom
-        /// </summary>
-        /// <param name="roomName"></param>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
+
         public bool AddSharedFileToChatroom(string roomName, SharedFile file) {
             try {
                 return db.AddSharedFileToChatroom(roomName, file);
@@ -295,13 +248,9 @@ namespace ChatServer
             }
         }
 
-        /// <summary>
+
         /// Remove file from chatroom
-        /// </summary>
-        /// <param name="roomName"></param>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
+
         public bool RemoveSharedFileFromChatroom(string roomName, string fileName) {
             try {
                 return db.RemoveSharedFileFromChatroom(roomName, fileName);
@@ -310,13 +259,9 @@ namespace ChatServer
             }
         }
 
-        /// <summary>
+
         /// Get shared file from chatroom
-        /// </summary>
-        /// <param name="roomName"></param>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
+ 
         public SharedFile GetSharedFileFromChatroom(string roomName, string fileName) {
             try {
                 return db.GetSharedFileFromChatroom(roomName, fileName);
@@ -325,12 +270,8 @@ namespace ChatServer
             }
         }
 
-        /// <summary>
         /// Get all shared files from chatroom
-        /// </summary>
-        /// <param name="roomName"></param>
-        /// <returns></returns>
-        /// <exception cref="FaultException{KeyNotFoundException}"></exception>
+
         public List<SharedFile> GetAllSharedFilesFromChatroom(string roomName) {
             Console.WriteLine($"Attempting to add shared file to chatroom: {roomName}");
             try {
@@ -339,7 +280,7 @@ namespace ChatServer
                 throw new FaultException<KeyNotFoundException>(e, new FaultReason("Chatroom not found."));
             }
         }
-
+        /* Methods for managing users in chatrooms */
         public bool AddUserToChatroom(string username, string roomName)
         {
             var user = SearchUserByName(username);
@@ -377,7 +318,7 @@ namespace ChatServer
             // Return the list of users in that chatroom
             return chatroom.Users;
         }
-
+        /* Methods for managing messages in chatrooms */
         public void AddMessageToChatroom(string roomName, Message message)
         {
             var chatroom = SearchChatroomByName(roomName);

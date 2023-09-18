@@ -14,10 +14,9 @@ namespace DatabaseDLL {
         private const int NUM_OF_USERS = 12;
         private const int NUM_OF_CHATROOMS = 4;
 
-        /// <summary>
+
         /// Method to populate ChatDatabase with fake data
-        /// </summary>
-        /// <param name="db"></param>
+
         public static void GenerateFakeDatabase(ChatDatabase db) {
             //// Creates users
             for (int i = 1; i <= NUM_OF_USERS; i++) {

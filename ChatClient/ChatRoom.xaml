@@ -183,13 +183,24 @@
                             Margin="0,0,16,0">
 
 
-                <Image Source="./Icons/plus_low.png"
-                           Width="20" Height="20"
-                           RenderOptions.BitmapScalingMode="Fant"
-                           Margin="5,5,5,0"/>
+                
+                    <Button Grid.Column="1"
+                        
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Click="UploadButton_Click">
+                        <Image Source="./Icons/plus_low.png"
+                               Width="20" Height="20"
+                               RenderOptions.BitmapScalingMode="Fant"
+                               Margin="5,5,5,0"
+                        />
 
-                <Button Grid.Column="1"
-                        Command="{Binding SendMessageCommand}"
+                    </Button>
+
+
+
+                    <Button Grid.Column="1"
+                        
                         Background="Transparent"
                         BorderBrush="Transparent"
                         Click="SendButton_Click">
