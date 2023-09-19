@@ -6,33 +6,38 @@
         xmlns:local="clr-namespace:ChatClient"
         mc:Ignorable="d"
         Title="ChatRoom" Height="650" Width="1200"
-        Background="#36393f">
+        Background="#36393f"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResizeWithGrip">
     <Grid>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="33"/>
+            <ColumnDefinition Width="167"/>
             <ColumnDefinition />
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="32.252"/>
+            <ColumnDefinition Width="167.748"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.ColumnSpan="2"
+        <Border Grid.ColumnSpan="5"
                 Background="#252525"
                 MouseDown="Border_MouseDown">
 
-        <Grid HorizontalAlignment="Stretch">
-            <Label Content="Chat App"
+            <Grid HorizontalAlignment="Stretch">
+                <Label Content="Chat App"
                        Foreground="Gray"
                        FontWeight="SemiBold"/>
 
-            <StackPanel HorizontalAlignment="Right"
+                <StackPanel HorizontalAlignment="Right"
                             Orientation="Horizontal">
 
-                <Button Width="20" Height="20"
+                    <Button Width="20" Height="20"
                             Content="-"
                             Background="Transparent"
                             BorderThickness="0"
@@ -41,7 +46,7 @@
                             Margin="0,0,0,3"
                             Click="ButtonMinimize_Click"/>
 
-                <Button Width="20" Height="20"
+                    <Button Width="20" Height="20"
                             Content="ㅁ"
                             Background="Transparent"
                             BorderThickness="0"
@@ -49,7 +54,7 @@
                             FontWeight="Bold"
                             Click="WindowStateButton_Click"/>
 
-                <Button Width="20" Height="20"
+                    <Button Width="20" Height="20"
                             Content="X"
                             Background="Transparent"
                             BorderThickness="0"
@@ -58,19 +63,19 @@
                             Margin="0,0,0,3"
                             Click="CloseButton_Click"/>
 
-            </StackPanel>
-        </Grid>
-    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
 
-    <Grid Background="#2F3136"
-              Grid.Row="1">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition/>
-            <RowDefinition Height="60" />
-        </Grid.RowDefinitions>
+        <Grid Background="#2F3136"
+              Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition/>
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
 
-        <Label Content="Contacts"
+            <Label Content="Contacts"
                    VerticalAlignment="Center"
                    FontWeight="Medium"
                    Foreground="Gray"
@@ -85,7 +90,7 @@
                       Grid.Row="1"
                       ItemContainerStyle="{StaticResource ChatRoomCard}"/>
 
-            <Button Content="Refresh"
+            <Button Content="Refresh User"
                     Width="100"
                     Height="30"
                     Margin="5"
@@ -97,79 +102,76 @@
                         Orientation="Horizontal"
                         Background="#292B2F">
 
-            <Border CornerRadius="25"
+                <Border CornerRadius="25"
                         Width="30" Height="30"
                         Background="#3bff6f"
                         Margin="18,0,0,0" />
 
-            <StackPanel VerticalAlignment="Center">
-                <Label x:Name="UsernameLabel"
+                <StackPanel VerticalAlignment="Center">
+                    <Label x:Name="UsernameLabel"
                        Content="Username"
                        Foreground="White"
                        FontWeight="SemiBold"/>
 
 
 
+                </StackPanel>
+
+
             </StackPanel>
 
-
-        </StackPanel>
-
-    </Grid>
+        </Grid>
 
 
-    <Grid Grid.Column="1"
+        <Grid Grid.Column="2"
               Grid.Row="1">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition/>
-            <RowDefinition Height="70"/>
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
 
-        <Border BorderBrush="#2F3136"
-                    BorderThickness="5,5,5,5">
-            <Grid HorizontalAlignment="Stretch"
+            <Border BorderBrush="#2F3136"
+                    BorderThickness="5,5,5,5" Grid.RowSpan="2">
+                <Grid HorizontalAlignment="Stretch"
                       Margin="8">
 
-            <Label x:Name="GetChatRoomName" 
+                    <Label x:Name="GetChatRoomName" 
                    Content="@ChatRoomName"
                    Foreground="White"
                    FontWeight="Bold"
                    Margin="5,0,5,0"
                    VerticalAlignment="Center" />
 
-                <StackPanel Orientation="Horizontal"
+                    <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Right">
 
-                    <Image Width="20" Height="20"
-                               RenderOptions.BitmapScalingMode="Fant"
-                               Margin="5,0,5,0"
-                               Source="./Icons/call_low.png"/>
 
-                </StackPanel>
+                    </StackPanel>
 
 
 
 
-            </Grid>
-            
-            
-            
-        </Border>
+                </Grid>
 
-            <ListView Grid.Row="1"
+
+
+            </Border>
+
+            <ListView Grid.Row="2"
                       ItemsSource="{Binding Messages}"               
                       Background="Transparent"
                       BorderThickness="0"
                       ItemContainerStyle="{StaticResource MessageBox}"/>
 
 
-            <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="90"/>
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
 
                 <TextBox x:Name="MessageTyping"
                     Grid.Row="1"
@@ -178,13 +180,13 @@
                     GotFocus="MessageTyping_GotFocus"                    
                     Grid.ColumnSpan="2"/>
 
-            <StackPanel Orientation="Horizontal"
+                <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             Grid.Column="1"
                             Margin="0,0,16,0">
 
 
-                
+
                     <Button Grid.Column="1"
                         
                         Background="Transparent"
@@ -210,20 +212,21 @@
                                RenderOptions.BitmapScalingMode="Fant"
                                Margin="5,5,16,0"
                         />
-                            
-                        </Button>
-                
-            </StackPanel>
+
+                    </Button>
+
+                </StackPanel>
+
+            </Grid>
 
         </Grid>
-
-    </Grid>
         <!-- ListView for Shared Files -->
-        <ListView Grid.Column="2" Grid.Row="1"
+        <ListView Grid.Column="3" Grid.Row="1"
           ItemsSource="{Binding SharedFiles}"
           Background="Transparent"
-          BorderThickness="0"
-          MouseDoubleClick="ListViewItem_MouseDoubleClick">
+          BorderBrush="#2F3136"
+                    BorderThickness="5,5,5,5"
+          MouseDoubleClick="ListViewItem_MouseDoubleClick" Grid.ColumnSpan="2">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Uploaded Files" DisplayMemberBinding="{Binding FileName}" Width="100"/>
@@ -234,10 +237,10 @@
         <Button Content="Refresh Files"
             Width="100"
             Height="30"
-            Grid.Column="2"
+            Grid.Column="4"
             Grid.Row="1"
             VerticalAlignment="Bottom"
-            HorizontalAlignment="Center"
-            Click="RefreshSharedFilesButton_Click"/>
+            HorizontalAlignment="Left"
+            Click="RefreshSharedFilesButton_Click" Margin="18,0,0,20"/>
     </Grid>
 </Window>
