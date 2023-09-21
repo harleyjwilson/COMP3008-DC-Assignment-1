@@ -210,5 +210,21 @@ namespace ChatClient
             }
         }
 
+        //TODO: Complete this
+        /// <summary>
+        /// Click event to private message user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UserListView_MouseDoubleClick(object sender, MouseButtonEventArgs e) {            
+            var clickedUser = ((FrameworkElement)e.OriginalSource).DataContext as User; // Get the clicked User
+            if (clickedUser != null && !clickedUser.username.Equals(this.Username)) { //if not empty or self
+                MessageBox.Show($"You clicked on: {clickedUser.Username}"); //DEBUG ONLY: delete
+                // Change this if needed
+                var privateMessage = new PrivateMessage(clickedUser.Username, this.Username, chatServer);
+                privateMessage.Show();
+            }
+        }
+
     }
 }

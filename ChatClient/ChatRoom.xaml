@@ -88,12 +88,13 @@
                       Background="Transparent"
                       BorderThickness="0"
                       Grid.Row="1"
-                      ItemContainerStyle="{StaticResource ChatRoomCard}"/>
+                      ItemContainerStyle="{StaticResource ChatRoomCard}"
+                      MouseDoubleClick="UserListView_MouseDoubleClick"/>
 
-            <Button Content="Refresh User"
+            <Button Content="Refresh Users List"
                     Width="100"
                     Height="30"
-                    Margin="5"
+                    Margin="50,462,50,23"
                     Click="RefreshUsersButton_Click"
                     Grid.Row="1"/>
 
