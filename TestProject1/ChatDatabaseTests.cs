@@ -1,6 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DatabaseDLL;
+using Microsoft.VisualBasic.FileIO;
 
 namespace TestsAssignment1 {
     [TestClass]
@@ -10,7 +11,6 @@ namespace TestsAssignment1 {
         [TestInitialize]
         public void Setup() {
             db = ChatDatabase.Instance;
-            DBGenerator.GenerateFakeDatabase(db); //populate database with fake data - DEBUG ONLY
         }
 
         [TestMethod]
@@ -53,27 +53,39 @@ namespace TestsAssignment1 {
             db.SearchPrivateChatroomByName("NonExistentRoom");
         }
 
-        //[TestMethod]
-        //public void TestAddSharedFileToChatroom() {
-        //    db.AddChatroom("General");
-        //    SharedFile file = new("file1", "content");
-        //    Assert.IsTrue(db.AddSharedFileToChatroom("General", file));
-        //}
+        [TestMethod]
+        public void TestAddSharedFileToChatroom() {
+            db.AddChatroom("General");
+            SharedFile file = new SharedFile {
+                FileName = "test2",
+                FileType = ".txt",
+                FileData = null
+            };
+            Assert.IsTrue(db.AddSharedFileToChatroom("General", file));
+        }
 
-        //[TestMethod]
-        //public void TestRemoveSharedFileFromChatroom() {
-        //    db.AddChatroom("General");
-        //    SharedFile file = new("file1", "content");
-        //    db.AddSharedFileToChatroom("General", file);
-        //    Assert.IsTrue(db.RemoveSharedFileFromChatroom("General", "file1"));
-        //}
+        [TestMethod]
+        public void TestRemoveSharedFileFromChatroom() {
+            db.AddChatroom("General");
+            SharedFile file = new SharedFile {
+                FileName = "test2",
+                FileType = ".txt",
+                FileData = null
+            };
+            db.AddSharedFileToChatroom("General", file);
+            Assert.IsTrue(db.RemoveSharedFileFromChatroom("General", "test2"));
+        }
 
-        //[TestMethod]
-        //public void TestGetSharedFileFromChatroom() {
-        //    db.AddChatroom("General");
-        //    SharedFile file = new("file1", "content");
-        //    db.AddSharedFileToChatroom("General", file);
-        //    Assert.IsNotNull(db.GetSharedFileFromChatroom("General", "file1"));
-        //}
+        [TestMethod]
+        public void TestGetSharedFileFromChatroom() {
+            db.AddChatroom("General");
+            SharedFile file = new SharedFile {
+                FileName = "test2",
+                FileType = ".bmp",
+                FileData = null
+            };
+            db.AddSharedFileToChatroom("General", file);
+            Assert.IsNotNull(db.GetSharedFileFromChatroom("General", "test2"));
+        }
     }
 }

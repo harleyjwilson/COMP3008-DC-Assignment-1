@@ -110,7 +110,11 @@ namespace ChatClient
 
 
         }
+        /// <summary>
         /// Refresh the list of active users and messages in the chatroom.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void RefreshUsersButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -140,13 +144,11 @@ namespace ChatClient
             }
         }
 
+        /// <summary>
         /// Handle the file sharing button click to upload a file.
-
-        //private async void UploadButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    //This is for file sharing button.
-        //}
-
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UploadButton_Click(object sender, RoutedEventArgs e) {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Text files (*.txt)|*.txt|Bitmap Files (*.bmp)|*.bmp";
@@ -158,7 +160,11 @@ namespace ChatClient
             }
         }
 
-        // Refresh the list of shared files in the chatroom
+        /// <summary>
+        /// Refresh the list of shared files in the chatroom
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void RefreshSharedFilesButton_Click(object sender, RoutedEventArgs e) {
             try {
                 var sharedFilesList = await Task.Run(() => chatServer.GetAllSharedFilesFromChatroom(ChatroomName));
@@ -183,6 +189,10 @@ namespace ChatClient
             }
         }
 
+        /// <summary>
+        /// Gets file from db and opens a save dialog
+        /// </summary>
+        /// <param name="sharedFile"></param>
         private void DownloadFile(SharedFile sharedFile) {
             try {
                 // Fetch the file data from the server

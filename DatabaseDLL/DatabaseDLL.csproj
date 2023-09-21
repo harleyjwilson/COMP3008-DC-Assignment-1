@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChatDatabase.cs" />
-    <Compile Include="DBGenerator.cs" />
     <Compile Include="PrivateChatroom.cs" />
     <Compile Include="Chatroom.cs" />
     <Compile Include="Message.cs" />

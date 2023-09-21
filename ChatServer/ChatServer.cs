@@ -259,15 +259,15 @@ namespace ChatServer
             }
             else if (fileExtension == ".bmp") {
                 fileType = "bitmap";
-        // Use the helper method to convert the bitmap to a byte array
-        using (Bitmap bitmap = new Bitmap(selectedFilePath)) {
-            fileData = BitmapToByteArray(bitmap);
-        }
+                // Use the helper method to convert the bitmap to a byte array
+                using (Bitmap bitmap = new Bitmap(selectedFilePath)) {
+                    fileData = BitmapToByteArray(bitmap);
+                }
             }
 
             // Create a new shared file
             SharedFile newFile = new SharedFile {
-                FileName = System.IO.Path.GetFileName(selectedFilePath),
+                FileName = Path.GetFileName(selectedFilePath),
                 FileType = fileType,
                 FileData = fileData
             };
