@@ -191,11 +191,10 @@
                         
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        Click="UploadButton_Click">
+                        Click="UploadButton_Click" Height="50" Width="31">
                         <Image Source="./Icons/plus_low.png"
-                               Width="20" Height="20"
+                               Width="37" Height="20"
                                RenderOptions.BitmapScalingMode="Fant"
-                               Margin="5,5,5,0"
                         />
 
                     </Button>
@@ -206,11 +205,10 @@
                         
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        Click="SendButton_Click">
+                        Click="SendButton_Click" Height="48" Width="31">
                         <Image Source="./Icons/send_low.png"
                                Width="20" Height="20"
                                RenderOptions.BitmapScalingMode="Fant"
-                               Margin="5,5,16,0"
                         />
 
                     </Button>
