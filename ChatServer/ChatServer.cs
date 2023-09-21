@@ -364,6 +364,13 @@ namespace ChatServer
             chatroom.AddMessage(message);
         }
 
+
+        /* Methods for managing messages in chatrooms */
+        public void AddMessageToPrivateChatroom(string usernameOne, string usernameTwo, string message)
+        {
+            db.AddMessageToPrivateChatroom(usernameOne, usernameTwo, message);
+        }
+
         public List<Message> ListMessagesInChatroom(string roomName)
         {
             // Search for the chatroom by its name
@@ -380,6 +387,12 @@ namespace ChatServer
 
             // Return the list of users in that chatroom
             return chatroom.Messages;
+        }
+
+        public List<Message> ListMessagesInPrivateChatroom(string usernameOne, string usernameTwo)
+        {
+            // Return the list of users in that chatroom
+            return db.ListMessagesInPrivateChatroom(usernameOne, usernameTwo);
         }
 
 

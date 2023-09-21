@@ -216,13 +216,25 @@ namespace ChatClient
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UserListView_MouseDoubleClick(object sender, MouseButtonEventArgs e) {            
+        private async void UserListView_MouseDoubleClick(object sender, MouseButtonEventArgs e) {            
             var clickedUser = ((FrameworkElement)e.OriginalSource).DataContext as User; // Get the clicked User
             if (clickedUser != null && !clickedUser.username.Equals(this.Username)) { //if not empty or self
-                MessageBox.Show($"You clicked on: {clickedUser.Username}"); //DEBUG ONLY: delete
+                MessageBox.Show($"You clicked on: {clickedUser.Username}"); //TODO To delete after debugging
                 // Change this if needed
-                var privateMessage = new PrivateMessage(clickedUser.Username, this.Username, chatServer);
-                privateMessage.Show();
+                var privateMessage;// = new PrivateMessage(clickedUser.Username, this.Username, chatServer);
+                try
+                {
+                    PrivateChatroom privChatRoom = chatServer.GetPrivateChatroom(clickedUser.Username, this.Username)
+                    privateMessage = new PrivateMessage(clickedUser.Username, this.Username, chatServer);
+                    privateMessage.Show();
+                }
+                catch (KeyNotFoundException e)
+                {
+                    string roomName = clickedUser.Username + "-" + this.Username
+                    await Task.Run(() => chatServer.AddPrivateChatroom(roomName, clickedUser.Username, this.Username)
+                    privateMessage = new PrivateMessage(clickedUser.Username, this.Username, chatServer);
+                    privateMessage.Show();
+                }
             }
         }
 

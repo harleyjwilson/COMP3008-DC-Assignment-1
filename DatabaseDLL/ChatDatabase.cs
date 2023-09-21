@@ -134,6 +134,24 @@ namespace DatabaseDLL {
   
         }
 
+        /* Methods for messages in private chatrooms */
+        public void AddMessageToPrivateChatroom(string usernameOne, string usernameTwo, string message)
+        {
+            User userOne = SearchUserByName(usernameOne);
+            User userTwo = SearchUserByName(usernameTwo);
+            Message msg = new Message(userOne, message);
+            PrivateChatroom chatroom = GetPrivateChatroom(userOne, userTwo);
+            chatroom.AddMessage(msg);
+        }
+
+        public List<Message> ListMessagesInPrivateChatroom(string usernameOne, string usernameTwo)
+        {
+            User userOne = SearchUserByName(usernameOne);
+            User userTwo = SearchUserByName(usernameTwo);
+            PrivateChatroom chatroom = GetPrivateChatroom(userOne, userTwo);
+            return chatroom.Messages.ToList();
+        }
+
     }
 
 }
