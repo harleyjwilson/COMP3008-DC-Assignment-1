@@ -1,6 +1,11 @@
-﻿using System;
+﻿using DatabaseDLL;
+using IChatServerInterfaceDLL;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,7 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using IChatServerInterfaceDLL;
+
 
 namespace ChatClient {
     /// <summary>
@@ -21,7 +26,7 @@ namespace ChatClient {
         public string ReceiverUsername { get; private set; }
         public string SenderUsername { get; private set; }
 
-        private IChatServerInterface chatServer; //TODO: delete if not needed
+        private IChatServerInterface chatServer;
         public PrivateMessage(string receiverUsername, string senderUsername, IChatServerInterface chatServerInterface) {
             InitializeComponent();
             ReceiverUsername = receiverUsername;
@@ -30,8 +35,9 @@ namespace ChatClient {
             // Initialize the chat server interface
             chatServer = chatServerInterface;
 
-            // TODO: You may need a view model depending on how you choose to do this
-            //DataContext = new PrivateMessageViewModel();
+            DataContext = new ViewModel.PrivateChatRoomViewModel();
+            RefreshGUI();
+
         }
 
         /// <summary>
@@ -55,9 +61,20 @@ namespace ChatClient {
             }
         }
 
+        /// Minimize the window.
+        private void ButtonMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+        
+       
+        /// Close the ChatRoom window.
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
 
-        // TODO: Implement your logic to send the private message here
-        private void SendMessageButton_Click(object sender, RoutedEventArgs e) {
+        private async void SendMessageButton_Click(object sender, RoutedEventArgs e) {
             string messageText = MessageTextBox.Text;
 
             if (string.IsNullOrWhiteSpace(messageText)) {
@@ -65,8 +82,57 @@ namespace ChatClient {
                 return;
             }
 
+            // Add the message to the database
+            User user = chatServer.SearchUserByName(SenderUsername);
+            Message message = new Message(user, messageText);
+            //await Task.Run(() => chatServer.AddMessageToPrivateChatroom(SenderUsername, ReceiverUsername, message));
+            await Task.Run(() => chatServer.AddMessageToPrivateChatroom(SenderUsername, ReceiverUsername, messageText));
+
+            // Update the ViewModel's Messages collection
+            var viewModel = DataContext as ViewModel.PrivateChatRoomViewModel;
+            viewModel?.Messages.Add(message);
+            //var viewModel = DataContext as ViewModel.MainPageViewModel;
+            //viewModel.Chatrooms.Add(await Task.Run(() => chatServer.SearchChatroomByName(newChatroomName)));
+
             // Clears the text box
             MessageTextBox.Text = "";
+            RefreshGUI();
+
+        }
+
+        /// <summary>
+        /// Refresh the list of active users and messages in the chatroom.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+         
+            RefreshGUI();
+        }
+
+        private async void RefreshGUI()
+        {
+            try
+            {
+                // Fetch the list of active users in the current chat room
+                var messageList = await Task.Run(() => chatServer.ListMessagesInPrivateChatroom(SenderUsername, ReceiverUsername));
+                var viewModel = DataContext as ViewModel.PrivateChatRoomViewModel;
+                if (viewModel != null)
+                {
+                    viewModel.Messages.Clear();
+                    foreach (var message in messageList)
+                    {
+                        viewModel.Messages.Add(message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or display it to the user
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                
+            }
         }
     }
 }

@@ -22,7 +22,6 @@ namespace ChatServer
         public ChatServer()
         {
             db = ChatDatabase.Instance;
-            //DBGenerator.GenerateFakeDatabase(db); //populate database with fake data - DEBUG ONLY
         }
         /* Methods for managing users */
         public bool AddUser(string username)
@@ -364,6 +363,13 @@ namespace ChatServer
             chatroom.AddMessage(message);
         }
 
+
+        /* Methods for managing messages in chatrooms */
+        public void AddMessageToPrivateChatroom(string usernameOne, string usernameTwo, string message)
+        {
+            db.AddMessageToPrivateChatroom(usernameOne, usernameTwo, message);
+        }
+
         public List<Message> ListMessagesInChatroom(string roomName)
         {
             // Search for the chatroom by its name
@@ -380,6 +386,27 @@ namespace ChatServer
 
             // Return the list of users in that chatroom
             return chatroom.Messages;
+        }
+
+        public List<Message> ListMessagesInPrivateChatroom(string usernameOne, string usernameTwo)
+        {
+            // Return the list of users in that chatroom
+            PrivateChatroom privateChatroom;
+            try
+            {
+                User userOne = db.SearchUserByName(usernameOne);
+                User userTwo = db.SearchUserByName(usernameTwo);
+                privateChatroom = db.GetPrivateChatroom(userOne, userTwo);
+            }
+            catch (KeyNotFoundException e)
+            {
+                Console.WriteLine($"Private Chatroom not found. Error: {e.Message}");
+                throw new FaultException<KeyNotFoundException>(e, new FaultReason(e.Message));
+            }
+
+            // Return the list of users in that chatroom
+            return privateChatroom.Messages;
+            //return db.ListMessagesInPrivateChatroom(usernameOne, usernameTwo);
         }
 
 
