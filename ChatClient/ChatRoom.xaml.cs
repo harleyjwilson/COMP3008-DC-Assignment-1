@@ -221,20 +221,18 @@ namespace ChatClient
             if (clickedUser != null && !clickedUser.username.Equals(this.Username)) { //if not empty or self
                 MessageBox.Show($"You clicked on: {clickedUser.Username}"); //TODO To delete after debugging
                 // Change this if needed
-                var privateMessage;// = new PrivateMessage(clickedUser.Username, this.Username, chatServer);
+                var privateMessage = new PrivateMessage(clickedUser.Username, this.Username, chatServer);
                 try
                 {
-                    PrivateChatroom privChatRoom = chatServer.GetPrivateChatroom(clickedUser.Username, this.Username)
-                    privateMessage = new PrivateMessage(clickedUser.Username, this.Username, chatServer);
-                    privateMessage.Show();
+                    PrivateChatroom privChatRoom = chatServer.GetPrivateChatroom(clickedUser.Username, this.Username);
                 }
-                catch (KeyNotFoundException e)
+                catch (Exception ex) when (ex is FaultException<KeyNotFoundException> || ex is KeyNotFoundException || ex is FaultException)
                 {
-                    string roomName = clickedUser.Username + "-" + this.Username
-                    await Task.Run(() => chatServer.AddPrivateChatroom(roomName, clickedUser.Username, this.Username)
-                    privateMessage = new PrivateMessage(clickedUser.Username, this.Username, chatServer);
-                    privateMessage.Show();
+                    string roomName = clickedUser.Username + "-" + this.Username;
+                    await Task.Run(() => chatServer.AddPrivateChatroom(roomName, clickedUser.Username, this.Username));
                 }
+               privateMessage.Show();
+
             }
         }
 

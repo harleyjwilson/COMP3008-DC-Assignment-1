@@ -144,13 +144,13 @@ namespace DatabaseDLL {
             chatroom.AddMessage(msg);
         }
 
-        public List<Message> ListMessagesInPrivateChatroom(string usernameOne, string usernameTwo)
-        {
-            User userOne = SearchUserByName(usernameOne);
-            User userTwo = SearchUserByName(usernameTwo);
-            PrivateChatroom chatroom = GetPrivateChatroom(userOne, userTwo);
-            return chatroom.Messages.ToList();
-        }
+        //public List<Message> ListMessagesInPrivateChatroom(string usernameOne, string usernameTwo)
+        //{
+        //    User userOne = SearchUserByName(usernameOne);
+        //    User userTwo = SearchUserByName(usernameTwo);
+        //    PrivateChatroom chatroom = GetPrivateChatroom(userOne, userTwo);
+        //    return chatroom.Messages.ToList();
+        //}
 
     }
 

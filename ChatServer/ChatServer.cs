@@ -392,7 +392,22 @@ namespace ChatServer
         public List<Message> ListMessagesInPrivateChatroom(string usernameOne, string usernameTwo)
         {
             // Return the list of users in that chatroom
-            return db.ListMessagesInPrivateChatroom(usernameOne, usernameTwo);
+            PrivateChatroom privateChatroom;
+            try
+            {
+                User userOne = db.SearchUserByName(usernameOne);
+                User userTwo = db.SearchUserByName(usernameTwo);
+                privateChatroom = db.GetPrivateChatroom(userOne, userTwo);
+            }
+            catch (KeyNotFoundException e)
+            {
+                Console.WriteLine($"Private Chatroom not found. Error: {e.Message}");
+                throw new FaultException<KeyNotFoundException>(e, new FaultReason(e.Message));
+            }
+
+            // Return the list of users in that chatroom
+            return privateChatroom.Messages;
+            //return db.ListMessagesInPrivateChatroom(usernameOne, usernameTwo);
         }
 
 
