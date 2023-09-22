@@ -26,7 +26,7 @@ namespace ChatClient {
         public string ReceiverUsername { get; private set; }
         public string SenderUsername { get; private set; }
 
-        private IChatServerInterface chatServer; //TODO: delete if not needed
+        private IChatServerInterface chatServer;
         public PrivateMessage(string receiverUsername, string senderUsername, IChatServerInterface chatServerInterface) {
             InitializeComponent();
             ReceiverUsername = receiverUsername;
@@ -35,7 +35,6 @@ namespace ChatClient {
             // Initialize the chat server interface
             chatServer = chatServerInterface;
 
-            // TODO: You may need a view model depending on how you choose to do this
             DataContext = new ViewModel.PrivateChatRoomViewModel();
             RefreshGUI();
 
@@ -75,7 +74,6 @@ namespace ChatClient {
             this.Close();
         }
 
-        // TODO: Implement your logic to send the private message here
         private async void SendMessageButton_Click(object sender, RoutedEventArgs e) {
             string messageText = MessageTextBox.Text;
 
@@ -102,7 +100,6 @@ namespace ChatClient {
 
         }
 
-        // TODO: Test private message refresh
         /// <summary>
         /// Refresh the list of active users and messages in the chatroom.
         /// </summary>
@@ -110,32 +107,7 @@ namespace ChatClient {
         /// <param name="e"></param>
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    // Fetch the list of active users in the current chat room
-            //    //var usersList = await Task.Run(() => chatServer.ListUsersInChatroom(ChatroomName));
-            //    //var messageList = await Task.Run(() => chatServer.ListMessagesInPrivateChatroom(SenderUsername, ReceiverUsername));
-            //    var messageList = await Task.Run(() => chatServer.ListMessagesInPrivateChatroom(SenderUsername, ReceiverUsername));
-            //    var viewModel = DataContext as ViewModel.PrivateChatRoomViewModel;
-            //    if (viewModel != null)
-            //    {
-            //        //viewModel.Users.Clear();
-            //        //foreach (var user in usersList)
-            //        //{
-            //        //    viewModel.Users.Add(user);
-            //        //}
-            //        viewModel.Messages.Clear();
-            //        foreach (var message in messageList)
-            //        {
-            //            viewModel.Messages.Add(message);
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    // Log the exception or display it to the user
-            //    MessageBox.Show($"An error occurred: {ex.Message}");
-            //}
+         
             RefreshGUI();
         }
 
@@ -144,17 +116,10 @@ namespace ChatClient {
             try
             {
                 // Fetch the list of active users in the current chat room
-                //var usersList = await Task.Run(() => chatServer.ListUsersInChatroom(ChatroomName));
-                //var messageList = await Task.Run(() => chatServer.ListMessagesInPrivateChatroom(SenderUsername, ReceiverUsername));
                 var messageList = await Task.Run(() => chatServer.ListMessagesInPrivateChatroom(SenderUsername, ReceiverUsername));
                 var viewModel = DataContext as ViewModel.PrivateChatRoomViewModel;
                 if (viewModel != null)
                 {
-                    //viewModel.Users.Clear();
-                    //foreach (var user in usersList)
-                    //{
-                    //    viewModel.Users.Add(user);
-                    //}
                     viewModel.Messages.Clear();
                     foreach (var message in messageList)
                     {
@@ -166,6 +131,7 @@ namespace ChatClient {
             {
                 // Log the exception or display it to the user
                 MessageBox.Show($"An error occurred: {ex.Message}");
+                
             }
         }
     }

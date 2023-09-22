@@ -175,11 +175,9 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox x:Name="MessageTyping"
-                    Grid.Row="1"
-                    Height="50"
                     Text="Enter message here:"
                     GotFocus="MessageTyping_GotFocus"                    
-                    Grid.ColumnSpan="2"/>
+                    Grid.ColumnSpan="2" Margin="0,10,0,10"/>
 
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"

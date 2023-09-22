@@ -210,7 +210,6 @@ namespace ChatClient
             }
         }
 
-        //TODO: Complete this
         /// <summary>
         /// Click event to private message user
         /// </summary>
@@ -219,7 +218,6 @@ namespace ChatClient
         private async void UserListView_MouseDoubleClick(object sender, MouseButtonEventArgs e) {            
             var clickedUser = ((FrameworkElement)e.OriginalSource).DataContext as User; // Get the clicked User
             if (clickedUser != null && !clickedUser.username.Equals(this.Username)) { //if not empty or self
-                MessageBox.Show($"You clicked on: {clickedUser.Username}"); //TODO To delete after debugging
                 // Change this if needed
                 var privateMessage = new PrivateMessage(clickedUser.Username, this.Username, chatServer);
                 try

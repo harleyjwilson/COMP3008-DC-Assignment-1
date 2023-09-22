@@ -51,19 +51,7 @@
         </Border>
 
         <!-- ListView to display the conversation -->
-        <!--<ListView x:Name="ConversationListView"
-                  Grid.Row="1"
-                  ItemsSource="{Binding Messages}"
-                  Background="Transparent"
-                  BorderThickness="0">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Sender" DisplayMemberBinding="{Binding Sender}" Width="100"/>
-                    <GridViewColumn Header="Message" DisplayMemberBinding="{Binding Content}" Width="400"/>
-                </GridView>
-            </ListView.View>
-        </ListView>-->
-        <ListView Grid.Row="2"
+        <ListView Grid.Row="1"
                       ItemsSource="{Binding Messages}"               
                       Background="Transparent"
                       BorderThickness="0"
@@ -71,7 +59,9 @@
 
 
         <!-- TextBox and Button for sending messages -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Height="50" 
+              VerticalAlignment="Bottom"
+              >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -83,9 +73,18 @@
                      Text="Type your message here..."
                      GotFocus="MessageTextBox_GotFocus"
                      Background="#2F3136"
-                     Foreground="White" Margin="0,0,80,0"/>
+                     Foreground="White" 
+                     Width="440"
+                     Grid.ColumnSpan="2"
+                     HorizontalAlignment="Left"/>
 
-            <Button x:Name="SendMessageButton"
+                <Grid
+                  Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="SendMessageButton"
                     Grid.Column="1"
                     Content="Send"
                     Click="SendMessageButton_Click"
@@ -94,13 +93,16 @@
                     Height="50"
                     Width="80"/>
 
-            <Button x:Name="RefreshButton"
-                    Content="Refresh"
-                    Click="RefreshButton_Click"
-                    Background="#3bff6f"
-                    Foreground="White"
-                    Height="50"
-                    Width="80" Margin="440,0,0,0"/>
+                <Button x:Name="RefreshButton"
+                        Grid.Column="0"
+                        Content="Refresh"
+                        Click="RefreshButton_Click"
+                        Background="#3bff6f"
+                        Foreground="White"
+                        Height="50"
+                        Width="80" Margin="440,0,0,0"/>
+            </Grid>
+
         </Grid>
     </Grid>
 </Window>
